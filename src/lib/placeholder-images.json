@@ -1,3 +1,14 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    { "id": "hero-1", "description": "Model posing in lingerie", "imageUrl": "https://picsum.photos/seed/h1/600/900", "imageHint": "woman lingerie" },
+    { "id": "hero-2", "description": "Sensual portrait of a woman", "imageUrl": "https://picsum.photos/seed/h2/600/900", "imageHint": "sensual portrait" },
+    { "id": "hero-3", "description": "Elegant woman smiling", "imageUrl": "https://picsum.photos/seed/h3/600/900", "imageHint": "elegant woman" },
+    { "id": "hero-4", "description": "Woman in a boudoir setting", "imageUrl": "https://picsum.photos/seed/h4/600/900", "imageHint": "boudoir photo" },
+    { "id": "hero-5", "description": "Close-up of a woman's face", "imageUrl": "https://picsum.photos/seed/h5/600/900", "imageHint": "woman face" },
+    { "id": "hero-6", "description": "Model posing elegantly", "imageUrl": "https://picsum.photos/seed/h6/600/900", "imageHint": "woman posing" },
+    { "id": "model-isabella", "description": "Portrait of model Isabella", "imageUrl": "https://picsum.photos/seed/m1/600/900", "imageHint": "brunette model" },
+    { "id": "model-sophia", "description": "Portrait of model Sophia", "imageUrl": "https://picsum.photos/seed/m2/600/900", "imageHint": "blonde model" },
+    { "id": "model-valentina", "description": "Portrait of model Valentina", "imageUrl": "https://picsum.photos/seed/m3/600/900", "imageHint": "redhead model" },
+    { "id": "sample-video", "description": "Still from a sample video", "imageUrl": "https://picsum.photos/seed/sv1/1280/720", "imageHint": "sensual video" }
+  ]
 }
