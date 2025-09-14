@@ -78,7 +78,7 @@ export default function Home() {
 
     setTimeout(() => {
       setNewModelsCount(Math.floor(Math.random() * 3) + 1);
-      setShuffledModels(shuffleArray([...models]).slice(0, 6));
+      setShuffledModels(shuffleArray([...models]).slice(0, 11));
       setIsLoading(false);
       setSearchPerformed(true);
     }, 2000);

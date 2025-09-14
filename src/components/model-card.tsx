@@ -13,19 +13,32 @@ interface ModelCardProps {
 
 export default function ModelCard({ model, onChatClick }: ModelCardProps) {
   const image = PlaceHolderImages.find(img => img.id === model.avatarImageId);
+  const isVideo = image?.imageUrl.endsWith('.mp4');
 
   return (
     <Card className="overflow-hidden group transition-all duration-300 bg-[#B8001F] border-transparent rounded-lg">
       <CardContent className="p-0">
         <div className="relative aspect-[3/4]">
           {image && (
-            <Image
-              src={image.imageUrl}
-              alt={model.name}
-              fill
-              className="object-cover"
-              data-ai-hint={image.imageHint}
-            />
+            isVideo ? (
+                <video
+                    src={image.imageUrl}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="object-cover w-full h-full"
+                />
+            ) : (
+                <Image
+                  src={image.imageUrl}
+                  alt={model.name}
+                  fill
+                  className="object-cover"
+                  data-ai-hint={image.imageHint}
+                  unoptimized={image.imageUrl.endsWith('.gif')}
+                />
+            )
           )}
           
           <div className="absolute top-3 right-3">
