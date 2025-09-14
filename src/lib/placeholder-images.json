@@ -1,3 +1,4 @@
+
 {
   "placeholderImages": [
     { "id": "hero-1", "description": "Model posing in lingerie", "imageUrl": "https://picsum.photos/seed/h1/600/900", "imageHint": "woman lingerie" },
@@ -6,9 +7,19 @@
     { "id": "hero-4", "description": "Woman in a boudoir setting", "imageUrl": "https://picsum.photos/seed/h4/600/900", "imageHint": "boudoir photo" },
     { "id": "hero-5", "description": "Close-up of a woman's face", "imageUrl": "https://picsum.photos/seed/h5/600/900", "imageHint": "woman face" },
     { "id": "hero-6", "description": "Model posing elegantly", "imageUrl": "https://picsum.photos/seed/h6/600/900", "imageHint": "woman posing" },
-    { "id": "model-isabella", "description": "Portrait of model Isabella", "imageUrl": "https://picsum.photos/seed/m1/600/900", "imageHint": "brunette model" },
-    { "id": "model-sophia", "description": "Portrait of model Sophia", "imageUrl": "https://picsum.photos/seed/m2/600/900", "imageHint": "blonde model" },
-    { "id": "model-valentina", "description": "Portrait of model Valentina", "imageUrl": "https://picsum.photos/seed/m3/600/900", "imageHint": "redhead model" },
-    { "id": "sample-video", "description": "Still from a sample video", "imageUrl": "https://picsum.photos/seed/sv1/1280/720", "imageHint": "sensual video" }
+    { "id": "sample-video", "description": "Still from a sample video", "imageUrl": "https://picsum.photos/seed/sv1/1280/720", "imageHint": "sensual video" },
+    { "id": "model-rebeca-martins", "description": "Portrait of model Rebeca Martins", "imageUrl": "https://i.imgur.com/xs5p9qO.gif", "imageHint": "woman posing" },
+    { "id": "model-camila-santos", "description": "Portrait of model Camila Santos", "imageUrl": "https://i.imgur.com/xs5p9qO.gif", "imageHint": "woman smiling" },
+    { "id": "model-julia-lima", "description": "Portrait of model Júlia Lima", "imageUrl": "https://i.imgur.com/XHxrKUw.jpeg", "imageHint": "woman selfie" },
+    { "id": "model-natalia-reis", "description": "Portrait of model Natália Reis", "imageUrl": "https://placehold.co/600x900.png?text=Video+Preview", "imageHint": "video still" },
+    { "id": "model-vanessa-silva", "description": "Portrait of model Vanessa Silva", "imageUrl": "https://i.imgur.com/evDu2fJ.png", "imageHint": "woman portrait" },
+    { "id": "model-estela-alves", "description": "Portrait of model Estela Alves", "imageUrl": "https://i.imgur.com/f3Ew1n2.png", "imageHint": "woman posing" },
+    { "id": "model-bianka-gazaki", "description": "Portrait of model Bianka Gazaki", "imageUrl": "https://i.imgur.com/iM8Ryby.png", "imageHint": "woman selfie" },
+    { "id": "model-ana-silva", "description": "Portrait of model Ana Silva", "imageUrl": "https://i.imgur.com/KVeBQPI.png", "imageHint": "woman portrait" },
+    { "id": "model-helena-ferreira", "description": "Portrait of model Helena Ferreira", "imageUrl": "https://i.imgur.com/0FGkje1.png", "imageHint": "woman posing" },
+    { "id": "model-isabella-rossi", "description": "Portrait of model Isabella Rossi", "imageUrl": "https://i.imgur.com/4mngT0L.png", "imageHint": "woman selfie" },
+    { "id": "model-sofia-laurent", "description": "Portrait of model Sofia Laurent", "imageUrl": "https://i.imgur.com/BxB79Vl.gif", "imageHint": "woman smiling" },
+    { "id": "model-carol-moraes", "description": "Portrait of model Carol Moraes", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman posing" },
+    { "id": "model-eliane-figueiredo", "description": "Portrait of model Eliane Figueiredo", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman selfie" }
   ]
 }
