@@ -153,19 +153,6 @@ export default function SelectionPage() {
               </div>
             </div>
           )}
-
-          {!searchPerformed && !isLoading && (
-             <div className="text-center mt-12">
-              <Button
-                asChild
-                size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 text-xl font-bold shadow-lg"
-              >
-                <Link href="/checkout">Acessar Pacote Completo - R$49</Link>
-              </Button>
-            </div>
-          )}
-
         </main>
         <Footer />
       </div>
