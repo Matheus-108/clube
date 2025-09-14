@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Loader2, Search, MapPin, Users, Zap, Sparkles, MessageSquare, Circle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import GifPreview from '@/components/gif-preview';
+import Image from 'next/image';
 
 const shuffleArray = <T,>(array: T[]): T[] => {
   let currentIndex = array.length, randomIndex;
@@ -99,6 +100,15 @@ export default function Home() {
             <p className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
               Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
             </p>
+            <div className="mt-6 flex justify-center">
+                <Image
+                    src="https://i.imgur.com/mWeHZtH.png"
+                    alt="Modelos do Clube"
+                    width={700}
+                    height={158}
+                    className="object-contain"
+                />
+            </div>
           </div>
 
           {/* Stats Section */}
