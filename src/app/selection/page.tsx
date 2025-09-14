@@ -8,6 +8,7 @@ import UrgencyCounter from '@/components/urgency-counter';
 import ModelCard from '@/components/model-card';
 import ChatModal from '@/components/chat-modal';
 import SampleModal from '@/components/sample-modal';
+import InteractivePopup from '@/components/interactive-popup';
 import { Button } from '@/components/ui/button';
 import { models, type Model } from '@/lib/models';
 import Link from 'next/link';
@@ -21,17 +22,9 @@ export default function SelectionPage() {
 
   useEffect(() => {
     setIsMounted(true);
-    const timer = setTimeout(() => {
-      if (!isChatModalOpen && !isSampleModalOpen) {
-        const randomModel = models[Math.floor(Math.random() * models.length)];
-        handleChatClick(randomModel);
-      }
-    }, 60000); // 60 seconds
+  }, []);
 
-    return () => clearTimeout(timer);
-  }, [isChatModalOpen, isSampleModalOpen]);
-
-  const handleChatClick = (model: Model) => {
+  const handleOpenChat = (model: Model) => {
     setSelectedModel(model);
     setChatModalOpen(true);
   };
@@ -39,15 +32,14 @@ export default function SelectionPage() {
   const handleSampleClick = (model: Model) => {
     setSelectedModel(model);
     setSampleModalOpen(true);
-  }
+  };
 
   const handleStartChatFromSample = (model: Model) => {
     setSampleModalOpen(false);
-    // Use a short timeout to allow the sample modal to close before opening the chat modal
     setTimeout(() => {
-        handleChatClick(model);
+      handleOpenChat(model);
     }, 150);
-  }
+  };
 
   if (!isMounted) {
     return null; // or a loading spinner
@@ -60,7 +52,8 @@ export default function SelectionPage() {
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              Encontre acompanhantes Mulheres em <span className="text-primary">{city || 'sua cidade'}</span>
+              Encontre acompanhantes Mulheres em{' '}
+              <span className="text-primary">{city || 'sua cidade'}</span>
             </h1>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
@@ -70,17 +63,21 @@ export default function SelectionPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {models.map(model => (
-              <ModelCard 
-                key={model.id} 
-                model={model} 
-                onChatClick={handleChatClick}
+              <ModelCard
+                key={model.id}
+                model={model}
+                onChatClick={handleOpenChat}
                 onSampleClick={handleSampleClick}
               />
             ))}
           </div>
 
           <div className="text-center mt-12">
-            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-xl font-bold shadow-lg">
+            <Button
+              asChild
+              size="lg"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 text-xl font-bold shadow-lg"
+            >
               <Link href="/checkout">Acessar Pacote Completo - R$49</Link>
             </Button>
           </div>
@@ -88,12 +85,12 @@ export default function SelectionPage() {
         <Footer />
       </div>
 
-      <ChatModal 
-        isOpen={isChatModalOpen} 
+      <ChatModal
+        isOpen={isChatModalOpen}
         onOpenChange={setChatModalOpen}
         model={selectedModel}
       />
-      
+
       <SampleModal
         isOpen={isSampleModalOpen}
         onOpenChange={setSampleModalOpen}
@@ -101,6 +98,8 @@ export default function SelectionPage() {
         city={city}
         onStartChat={handleStartChatFromSample}
       />
+      
+      <InteractivePopup onOpenChat={handleOpenChat} />
     </>
   );
 }
