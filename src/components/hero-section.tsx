@@ -26,7 +26,7 @@ export default function HeroSection() {
       </div>
       <div className="relative container mx-auto px-4 py-24 sm:py-32 lg:py-40 text-center flex flex-col items-center">
         <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-primary tracking-tight">
-          Acesso único: fotos + vídeos + chamada
+          Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
         </h1>
         <p className="mt-6 text-lg md:text-xl max-w-2xl text-foreground/80">
           Preview em GIFs. Escolha, pague e agende sua chamada privada.
