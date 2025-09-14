@@ -23,19 +23,23 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
   const [videoCount, setVideoCount] = useState(0);
   
   const getModelImages = (model: Model): ImagePlaceholder[] => {
+    // Find the main avatar image object
     const avatarImage = PlaceHolderImages.find(pImg => pImg.id === model.avatarImageId);
     
+    // Find all the GIF image objects
     const gifImages = (model.gifImageIds || [])
       .map(id => PlaceHolderImages.find(pImg => pImg.id === id))
       .filter((img): img is ImagePlaceholder => !!img);
       
-    const allImages = [avatarImage, ...gifImages].filter((img): img is ImagePlaceholder => !!img);
+    // Start with the avatar image if it exists
+    const allImages: ImagePlaceholder[] = avatarImage ? [avatarImage] : [];
+    
+    // Add the GIF images
+    allImages.push(...gifImages);
 
-    // Remove duplicates by id
+    // Remove duplicates by id, keeping the first occurrence (which will be the avatar if present)
     const uniqueImages = allImages.filter((image, index, self) =>
-      index === self.findIndex((t) => (
-        t.id === image.id
-      ))
+      index === self.findIndex((t) => t.id === image.id)
     );
     
     return uniqueImages;
