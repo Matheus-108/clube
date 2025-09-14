@@ -5,6 +5,7 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import ModelCard from '@/components/model-card';
 import ChatModal from '@/components/chat-modal';
+import SampleModal from '@/components/sample-modal';
 import InteractivePopup from '@/components/interactive-popup';
 import { Button } from '@/components/ui/button';
 import { models, type Model } from '@/lib/models';
@@ -27,6 +28,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 export default function Home() {
   const [isChatModalOpen, setChatModalOpen] = useState(false);
+  const [isSampleModalOpen, setSampleModalOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<Model | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   
@@ -69,7 +71,13 @@ export default function Home() {
   const handleOpenChat = (model: Model) => {
     setSelectedModel(model);
     setChatModalOpen(true);
+    setSampleModalOpen(false);
   };
+  
+  const handleOpenSample = (model: Model) => {
+    setSelectedModel(model);
+    setSampleModalOpen(true);
+  }
 
   const handleSearch = () => {
     if (!city) return;
@@ -184,6 +192,7 @@ export default function Home() {
                     key={model.id}
                     model={model}
                     onChatClick={handleOpenChat}
+                    onSampleClick={handleOpenSample}
                   />
                 ))}
               </div>
@@ -218,6 +227,16 @@ export default function Home() {
         />
       )}
       
+      {selectedModel && (
+        <SampleModal
+          isOpen={isSampleModalOpen}
+          onOpenChange={setSampleModalOpen}
+          model={selectedModel}
+          city={city}
+          onStartChat={handleOpenChat}
+        />
+      )}
+
       <InteractivePopup onOpenChat={handleOpenChat} />
     </>
   );

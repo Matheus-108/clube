@@ -2,16 +2,17 @@ import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, MessageCircle } from 'lucide-react';
+import { Eye, MessageCircle } from 'lucide-react';
 import { type Model } from '@/lib/models';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 interface ModelCardProps {
   model: Model;
   onChatClick: (model: Model) => void;
+  onSampleClick: (model: Model) => void;
 }
 
-export default function ModelCard({ model, onChatClick }: ModelCardProps) {
+export default function ModelCard({ model, onChatClick, onSampleClick }: ModelCardProps) {
   const image = PlaceHolderImages.find(img => img.id === model.avatarImageId);
   const isVideo = image?.imageUrl.endsWith('.mp4');
 
@@ -60,11 +61,15 @@ export default function ModelCard({ model, onChatClick }: ModelCardProps) {
             <h3 className="font-headline text-2xl font-bold text-white">{model.name}</h3>
           </div>
         </div>
-        <div className="p-4">
-          <Button onClick={() => onChatClick(model)} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-            <MessageCircle className="mr-2" />
-            Conversar
-          </Button>
+        <div className="p-4 flex gap-2">
+            <Button onClick={() => onSampleClick(model)} className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
+              <Eye className="mr-2" />
+              Ver Prévia
+            </Button>
+            <Button onClick={() => onChatClick(model)} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                <MessageCircle className="mr-2" />
+                Conversar
+            </Button>
         </div>
       </CardContent>
     </Card>
