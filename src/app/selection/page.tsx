@@ -41,6 +41,14 @@ export default function SelectionPage() {
     setSampleModalOpen(true);
   }
 
+  const handleStartChatFromSample = (model: Model) => {
+    setSampleModalOpen(false);
+    // Use a short timeout to allow the sample modal to close before opening the chat modal
+    setTimeout(() => {
+        handleChatClick(model);
+    }, 150);
+  }
+
   if (!isMounted) {
     return null; // or a loading spinner
   }
@@ -89,6 +97,9 @@ export default function SelectionPage() {
       <SampleModal
         isOpen={isSampleModalOpen}
         onOpenChange={setSampleModalOpen}
+        model={selectedModel}
+        city={city}
+        onStartChat={handleStartChatFromSample}
       />
     </>
   );
