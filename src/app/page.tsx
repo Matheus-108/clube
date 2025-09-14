@@ -27,7 +27,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 export default function Home() {
   const [isChatModalOpen, setChatModalOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
+  const [selectedModel, setSelectedModel] = useState<Model | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   
   // State for city search
@@ -209,12 +209,14 @@ export default function Home() {
         </main>
         <Footer />
       </div>
-
-      <ChatModal
-        isOpen={isChatModalOpen}
-        onOpenChange={setChatModalOpen}
-        model={selectedModel}
-      />
+        
+      {selectedModel && (
+        <ChatModal
+          isOpen={isChatModalOpen}
+          onOpenChange={setChatModalOpen}
+          model={selectedModel}
+        />
+      )}
       
       <InteractivePopup onOpenChat={handleOpenChat} />
     </>

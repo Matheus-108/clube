@@ -90,4 +90,77 @@
   .hover-gradient:hover {
     background-image: linear-gradient(to right, #E61E42, #FFB300);
   }
+
+  /* WhatsApp Chat Modal Styles */
+  .whatsapp-modal {
+    @apply max-w-lg w-full h-full md:h-[85vh] md:max-h-[700px] flex flex-col shadow-2xl rounded-none md:rounded-lg;
+  }
+
+  .whatsapp-modal > [data-slot='close-button'] {
+    @apply hidden;
+  }
+  
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.3s ease-out forwards;
+  }
+  
+  @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px) }
+      to { opacity: 1; transform: translateY(0) }
+  }
+
+  .animate-fade-in {
+      animation: fade-in 0.5s ease-out forwards;
+  }
+
+  .typing-indicator span {
+    height: 8px;
+    width: 8px;
+    float: left;
+    margin: 0 1px;
+    background-color: #9E9E9E;
+    display: block;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: typing-animation 1s infinite ease-in-out;
+  }
+
+  .typing-indicator span:nth-of-type(1) {
+    animation-delay: -0.2s;
+  }
+
+  .typing-indicator span:nth-of-type(2) {
+    animation-delay: -0.1s;
+  }
+
+  @keyframes typing-animation {
+    0% {
+      transform: translateY(0px);
+      background-color: #9E9E9E;
+    }
+    25% {
+      transform: translateY(-5px);
+      background-color: #757575;
+    }
+    50% {
+      transform: translateY(0px);
+      background-color: #9E9E9E;
+    }
+    100% {
+      transform: translateY(0px);
+      background-color: #9E9E9E;
+    }
+  }
+
 }

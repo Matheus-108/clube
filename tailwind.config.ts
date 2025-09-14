@@ -49,6 +49,10 @@ export default {
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         'vibrant-red': '#E61E42',
+        'whatsapp-green-dark': '#075E54',
+        'whatsapp-green-light': '#25D366',
+        'whatsapp-bg': '#ECE5DD',
+        'whatsapp-message-out': '#DCF8C6',
         chart: {
           '1': 'hsl(var(--chart-1))',
           '2': 'hsl(var(--chart-2))',
