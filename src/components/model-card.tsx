@@ -2,21 +2,20 @@ import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, MessageCircle, PlayCircle } from 'lucide-react';
+import { Heart, MessageCircle } from 'lucide-react';
 import { type Model } from '@/lib/models';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 interface ModelCardProps {
   model: Model;
   onChatClick: (model: Model) => void;
-  onSampleClick: (model: Model) => void;
 }
 
-export default function ModelCard({ model, onChatClick, onSampleClick }: ModelCardProps) {
+export default function ModelCard({ model, onChatClick }: ModelCardProps) {
   const image = PlaceHolderImages.find(img => img.id === model.avatarImageId);
 
   return (
-    <Card className="overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:scale-105">
+    <Card className="overflow-hidden group transition-all duration-300 hover:shadow-2xl">
       <CardContent className="p-0">
         <div className="relative aspect-[3/4]">
           {image && (
@@ -24,7 +23,7 @@ export default function ModelCard({ model, onChatClick, onSampleClick }: ModelCa
               src={image.imageUrl}
               alt={model.name}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-110"
+              className="object-cover"
               data-ai-hint={image.imageHint}
             />
           )}
@@ -37,12 +36,8 @@ export default function ModelCard({ model, onChatClick, onSampleClick }: ModelCa
             </Badge>
           </div>
         </div>
-        <div className="p-4 bg-card grid grid-cols-2 gap-2">
-          <Button variant="outline" onClick={() => onSampleClick(model)}>
-            <PlayCircle className="mr-2" />
-            Ver Amostra
-          </Button>
-          <Button onClick={() => onChatClick(model)} className="bg-primary text-primary-foreground hover:bg-primary/90">
+        <div className="p-4 bg-card">
+          <Button onClick={() => onChatClick(model)} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
             <MessageCircle className="mr-2" />
             Conversar
           </Button>

@@ -7,7 +7,6 @@ import SimulatedLocation from '@/components/simulated-location';
 import UrgencyCounter from '@/components/urgency-counter';
 import ModelCard from '@/components/model-card';
 import ChatModal from '@/components/chat-modal';
-import SampleModal from '@/components/sample-modal';
 import InteractivePopup from '@/components/interactive-popup';
 import { Button } from '@/components/ui/button';
 import { models, type Model } from '@/lib/models';
@@ -15,7 +14,6 @@ import Link from 'next/link';
 
 export default function SelectionPage() {
   const [isChatModalOpen, setChatModalOpen] = useState(false);
-  const [isSampleModalOpen, setSampleModalOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
   const [isMounted, setIsMounted] = useState(false);
   const [city, setCity] = useState('');
@@ -27,18 +25,6 @@ export default function SelectionPage() {
   const handleOpenChat = (model: Model) => {
     setSelectedModel(model);
     setChatModalOpen(true);
-  };
-
-  const handleSampleClick = (model: Model) => {
-    setSelectedModel(model);
-    setSampleModalOpen(true);
-  };
-
-  const handleStartChatFromSample = (model: Model) => {
-    setSampleModalOpen(false);
-    setTimeout(() => {
-      handleOpenChat(model);
-    }, 150);
   };
 
   if (!isMounted) {
@@ -67,7 +53,6 @@ export default function SelectionPage() {
                 key={model.id}
                 model={model}
                 onChatClick={handleOpenChat}
-                onSampleClick={handleSampleClick}
               />
             ))}
           </div>
@@ -89,14 +74,6 @@ export default function SelectionPage() {
         isOpen={isChatModalOpen}
         onOpenChange={setChatModalOpen}
         model={selectedModel}
-      />
-
-      <SampleModal
-        isOpen={isSampleModalOpen}
-        onOpenChange={setSampleModalOpen}
-        model={selectedModel}
-        city={city}
-        onStartChat={handleStartChatFromSample}
       />
       
       <InteractivePopup onOpenChat={handleOpenChat} />
