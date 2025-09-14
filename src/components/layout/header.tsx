@@ -9,7 +9,7 @@ export default function Header() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
-            src="https://i.imgur.com/HlMARHx.png"
+            src="https://i.imgur.com/GcVA01N.png"
             alt="Clube HOT Logo"
             width={120}
             height={40}
