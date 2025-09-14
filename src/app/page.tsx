@@ -186,7 +186,7 @@ export default function Home() {
                 >
                   <Link href="/checkout">Ver modelos de {city} agora 🔥</Link>
                 </Button>
-                 <GifPreview />
+                <GifPreview />
               </div>
             </div>
           )}
