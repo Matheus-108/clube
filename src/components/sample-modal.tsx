@@ -23,16 +23,22 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
   const [videoCount, setVideoCount] = useState(0);
   
   const getModelImages = (model: Model): ImagePlaceholder[] => {
-    let imageIds: string[];
-    if (model.gifImageIds && model.gifImageIds.length > 0) {
-      imageIds = model.gifImageIds;
-    } else {
-      imageIds = [model.avatarImageId];
-    }
+    const avatarImage = PlaceHolderImages.find(pImg => pImg.id === model.avatarImageId);
     
-    return imageIds
+    const gifImages = (model.gifImageIds || [])
       .map(id => PlaceHolderImages.find(pImg => pImg.id === id))
       .filter((img): img is ImagePlaceholder => !!img);
+      
+    const allImages = [avatarImage, ...gifImages].filter((img): img is ImagePlaceholder => !!img);
+
+    // Remove duplicates by id
+    const uniqueImages = allImages.filter((image, index, self) =>
+      index === self.findIndex((t) => (
+        t.id === image.id
+      ))
+    );
+    
+    return uniqueImages;
   };
 
   const modelImages = isOpen && model ? getModelImages(model) : [];
@@ -128,6 +134,7 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
                           muted
                           playsInline
                           className="object-cover w-full h-full"
+                          key={image.id}
                         />
                       ) : (
                         <Image
