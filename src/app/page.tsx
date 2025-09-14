@@ -142,6 +142,7 @@ export default function Home() {
                 Procurar garotas
               </Button>
             </div>
+            {!searchPerformed && <GifPreview />}
           </Card>
 
           {/* Search Results Section */}
@@ -186,7 +187,6 @@ export default function Home() {
                 >
                   <Link href="/checkout">Ver modelos de {city} agora 🔥</Link>
                 </Button>
-                <GifPreview />
               </div>
             </div>
           )}
