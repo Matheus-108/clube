@@ -15,7 +15,7 @@ export default function ModelCard({ model, onChatClick }: ModelCardProps) {
   const image = PlaceHolderImages.find(img => img.id === model.avatarImageId);
 
   return (
-    <Card className="overflow-hidden group transition-all duration-300 hover:shadow-2xl">
+    <Card className="overflow-hidden group transition-all duration-300">
       <CardContent className="p-0">
         <div className="relative aspect-[3/4]">
           {image && (
@@ -26,6 +26,15 @@ export default function ModelCard({ model, onChatClick }: ModelCardProps) {
               className="object-cover"
               data-ai-hint={image.imageHint}
             />
+          )}
+          {model.isOnline && (
+            <div className="absolute top-3 right-3 flex items-center gap-2 bg-black/50 rounded-full p-1 pr-2">
+               <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                </span>
+                <span className="text-white text-xs font-semibold">Online</span>
+            </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
           <div className="absolute bottom-0 left-0 p-4">
