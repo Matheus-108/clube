@@ -100,15 +100,6 @@ export default function Home() {
             <p className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
               Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
             </p>
-            <div className="mt-6 flex justify-center">
-                <Image
-                    src="https://i.imgur.com/mWeHZtH.png"
-                    alt="Modelos do Clube"
-                    width={400}
-                    height={90}
-                    className="object-contain"
-                />
-            </div>
           </div>
 
           {/* Stats Section */}
