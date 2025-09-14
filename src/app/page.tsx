@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { models, type Model } from '@/lib/models';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
-import { Loader2, Search, MapPin, Users, Zap } from 'lucide-react';
+import { Loader2, Search, MapPin, Users, Zap, Sparkles, MessageSquare, Circle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const shuffleArray = <T,>(array: T[]): T[] => {
@@ -33,11 +33,35 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [shuffledModels, setShuffledModels] = useState<Model[]>([]);
-  const [onlineGirlsCount, setOnlineGirlsCount] = useState(0);
+  const [onlineGirlsCount, setOnlineGirlsCount] = useState(94);
   const [newModelsCount, setNewModelsCount] = useState(0);
+  const [newTodayCount, setNewTodayCount] = useState(12);
 
   useEffect(() => {
     setIsMounted(true);
+    // Initial random values
+    setOnlineGirlsCount(Math.floor(Math.random() * (100 - 80 + 1)) + 80);
+    setNewTodayCount(Math.floor(Math.random() * (15 - 5 + 1)) + 5);
+
+    const onlineInterval = setInterval(() => {
+        setOnlineGirlsCount(prev => {
+            const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+            const newCount = prev + change;
+            return Math.max(80, Math.min(100, newCount)); // Keep between 80 and 100
+        });
+    }, 3000);
+
+    const newTodayInterval = setInterval(() => {
+        setNewTodayCount(prev => {
+            const change = Math.random() > 0.8 ? 1 : 0; // Occasionally increase
+            return prev + change;
+        });
+    }, 10000);
+    
+    return () => {
+        clearInterval(onlineInterval);
+        clearInterval(newTodayInterval);
+    }
   }, []);
 
   const handleOpenChat = (model: Model) => {
@@ -51,7 +75,6 @@ export default function Home() {
     setSearchPerformed(false);
 
     setTimeout(() => {
-      setOnlineGirlsCount(Math.floor(Math.random() * (15 - 7 + 1)) + 7);
       setNewModelsCount(Math.floor(Math.random() * 3) + 1);
       setShuffledModels(shuffleArray([...models]).slice(0, 6));
       setIsLoading(false);
@@ -76,6 +99,23 @@ export default function Home() {
               Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
             </p>
           </div>
+
+          {/* Stats Section */}
+          <div className="flex justify-center items-center gap-4 sm:gap-8 mb-8 text-sm sm:text-base">
+                <div className="flex items-center gap-2">
+                    <Circle className="w-3 h-3 text-green-500 fill-green-500" />
+                    <span className="font-bold text-green-400">{onlineGirlsCount} Garotas Online</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-purple-400" />
+                    <span className="font-bold text-purple-400">{newTodayCount} Novas Hoje</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4 text-green-400" />
+                    <span className="font-bold text-green-400">100% Interações Reais</span>
+                </div>
+            </div>
+
 
           {/* City Search Section */}
           <Card className="max-w-2xl mx-auto bg-[#1a1a1a] border-gray-800 p-6 rounded-lg shadow-lg">
@@ -118,11 +158,6 @@ export default function Home() {
                       <MapPin className="text-primary"/>
                       Localização detectada: {city}
                   </div>
-                  <p className="text-white/80 mt-2">
-                    <Users className="inline h-4 w-4 mr-1" />
-                    {onlineGirlsCount} garotas online agora 
-                    <span className="text-xs text-white/50 ml-1">(simulação em tempo real)</span>
-                  </p>
               </Card>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
