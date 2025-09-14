@@ -163,4 +163,18 @@
     }
   }
 
+  .animated-progress-bar > div {
+    background-image: linear-gradient(to right, hsl(var(--primary)), #a855f7, hsl(var(--accent)));
+    animation: progress-shine 2s infinite;
+    background-size: 200% 100%;
+  }
+
+  @keyframes progress-shine {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
 }
