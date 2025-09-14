@@ -176,12 +176,18 @@ export default function Home() {
           {/* Search Results Section */}
           {searchPerformed && !isSearchLoading && (
             <div className="mt-12">
-              <Card className="max-w-3xl mx-auto bg-transparent border-none text-center mb-8">
+              <Card className="max-w-3xl mx-auto bg-transparent border-none text-center mb-6">
                   <div className="flex items-center justify-center gap-2 text-xl font-semibold">
-                      <MapPin className="text-primary"/>
+                      <MapPin className="text-vibrant-red"/>
                       Localização detectada: {city}
                   </div>
               </Card>
+
+              <p className="text-center text-lg md:text-xl max-w-2xl mx-auto text-white/90 mb-10 leading-relaxed">
+                  Descobrimos quem está disponível em <span className="font-bold text-vibrant-red">{city}</span> neste momento.
+                  <br />
+                  No Clube do Sexo você pode espiar fotos secretas, desbloquear vídeos íntimos e marcar encontros sigilosos… tudo em um só lugar.
+              </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {shuffledModels.map(model => (
