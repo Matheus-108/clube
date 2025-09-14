@@ -94,7 +94,7 @@ export default function Home() {
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-2">
               <Image
                 src="https://i.imgur.com/mWeHZtH.png"
                 alt="Banner"
