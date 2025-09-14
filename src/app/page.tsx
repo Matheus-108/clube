@@ -213,7 +213,7 @@ export default function Home() {
                   size="lg"
                   className="bg-accent text-accent-foreground hover:bg-accent/90 text-xl font-bold shadow-lg py-7 px-10"
                 >
-                  <Link href="https://nitropaycheckout.com.br/checkout/5a5063d8-19ac-46d7-8257-b1f1393bcdd7">Ver modelos de {city} agora 🔥</Link>
+                  <Link href="https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468">Ver modelos de {city} agora 🔥</Link>
                 </Button>
               </div>
             </div>

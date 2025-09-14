@@ -181,7 +181,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
                         <p className="text-sm text-gray-800" style={{whiteSpace: 'pre-wrap'}}>{message.text}</p>
                         {message.isCheckoutButton && (
                         <Button asChild size="sm" className="mt-2 w-full bg-vibrant-red text-white font-bold hover:bg-red-500">
-                            <Link href="https://nitropaycheckout.com.br/checkout/5a5063d8-19ac-46d7-8257-b1f1393bcdd7">Entrar no Clube Agora 🔥</Link>
+                            <Link href="https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468">Entrar no Clube Agora 🔥</Link>
                         </Button>
                         )}
                     </div>
