@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from './ui/badge';
 
 export default function UrgencyCounter() {
-  const [count, setCount] = useState(7);
+  const [count, setCount] = useState(9);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -21,10 +21,10 @@ export default function UrgencyCounter() {
       <CardContent className="p-4 flex items-center gap-4">
         <Users className="h-6 w-6" />
         <div>
-          <p className="font-bold text-lg leading-tight">Apenas {count} acessos restantes hoje</p>
-          <p className="text-xs text-primary-foreground/80">(contador simulado para urgência)</p>
+          <p className="font-bold text-lg leading-tight">{count} garotas online agora</p>
+          <p className="text-xs text-primary-foreground/80">(simulação em tempo real)</p>
         </div>
-        <Badge variant="destructive" className="ml-auto bg-accent text-accent-foreground animate-pulse">Vagas limitadas</Badge>
+        <Badge variant="destructive" className="ml-auto bg-accent text-accent-foreground animate-pulse">Online Agora</Badge>
       </CardContent>
     </Card>
   );
