@@ -104,19 +104,10 @@ export default function Home() {
     <>
       <div className="flex flex-col min-h-screen bg-black text-white">
         <Header />
-        <main className="flex-1 container mx-auto px-4 pt-2 pb-8">
+        <main className="flex-1 container mx-auto px-4 pt-8 pb-8">
           <div className="text-center">
-            <div className="flex justify-center -mb-2">
-              <Image
-                src="https://i.imgur.com/mWeHZtH.png"
-                alt="Banner"
-                width={200}
-                height={25}
-                className="object-contain"
-              />
-            </div>
             <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl font-body text-white">
-              Club do sexo
+              Clube do Sexo
             </h1>
             <p className="mt-1 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
               Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
