@@ -18,7 +18,7 @@ export default function Header() {
         </Link>
         <div className="flex items-center gap-2">
           <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-            <Link href="/">Quero Acesso</Link>
+            <Link href="https://nitropaycheckout.com.br/checkout/5a5063d8-19ac-46d7-8257-b1f1393bcdd7">Quero Acesso</Link>
           </Button>
           <ThemeToggle />
         </div>
