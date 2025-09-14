@@ -124,44 +124,42 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
           </div>
           {/* Right Panel - Carousel */}
           <div className="relative order-1 md:order-2 h-[50vh] md:h-auto bg-black">
-            {modelImages.length > 0 && (
-              <Carousel className="h-full w-full">
-              <CarouselContent className="h-full">
-                  {modelImages.map((image) => (
-                  <CarouselItem key={image.id} className="h-full">
-                      <div className="relative h-full w-full flex items-center justify-center">
-                      {image.imageUrl.endsWith('.mp4') ? (
-                          <video
-                          src={image.imageUrl}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="object-contain w-full h-full"
-                          key={image.id}
-                          />
-                      ) : (
-                          <Image
-                          src={image.imageUrl}
-                          alt={model.name}
-                          fill
-                          className="object-contain"
-                          data-ai-hint={image.imageHint}
-                          unoptimized
-                          />
-                      )}
-                      </div>
-                  </CarouselItem>
-                  ))}
-              </CarouselContent>
-              {modelImages.length > 1 && (
-                  <>
-                      <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
-                      <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
-                  </>
-              )}
-              </Carousel>
+            <Carousel className="h-full w-full">
+            <CarouselContent className="h-full">
+                {modelImages.map((image) => (
+                <CarouselItem key={image.id} className="h-full">
+                    <div className="relative h-full w-full flex items-center justify-center">
+                    {image.imageUrl.endsWith('.mp4') ? (
+                        <video
+                        src={image.imageUrl}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="object-contain w-full h-full"
+                        key={image.id}
+                        />
+                    ) : (
+                        <Image
+                        src={image.imageUrl}
+                        alt={model.name}
+                        fill
+                        className="object-contain"
+                        data-ai-hint={image.imageHint}
+                        unoptimized
+                        />
+                    )}
+                    </div>
+                </CarouselItem>
+                ))}
+            </CarouselContent>
+            {modelImages.length > 1 && (
+                <>
+                    <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
+                    <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
+                </>
             )}
+            </Carousel>
           </div>
         </div>
       </DialogContent>
