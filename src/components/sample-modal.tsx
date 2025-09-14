@@ -27,6 +27,7 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
     if (isOpen && model) {
       const getModelImages = (model: Model): ImagePlaceholder[] => {
         const avatarImage = PlaceHolderImages.find(pImg => pImg.id === model.avatarImageId);
+        
         const gifImages = (model.gifImageIds || [])
           .map(id => PlaceHolderImages.find(pImg => pImg.id === id))
           .filter((img): img is ImagePlaceholder => !!img);
@@ -127,7 +128,7 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
             <CarouselContent className="h-full">
                 {modelImages.map((image) => (
                 <CarouselItem key={image.id} className="h-full">
-                    <div className="relative h-full w-full">
+                    <div className="relative h-full w-full flex items-center justify-center">
                     {image.imageUrl.endsWith('.mp4') ? (
                         <video
                         src={image.imageUrl}
