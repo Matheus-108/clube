@@ -9,9 +9,22 @@ export default function UrgencyCounter() {
   const [count, setCount] = useState(9);
 
   useEffect(() => {
+    const min = 7;
+    const max = 15;
+
     const timer = setInterval(() => {
-      setCount(prevCount => (prevCount > 2 ? prevCount - 1 : 2));
-    }, 8000); // Decrease every 8 seconds
+      setCount(prevCount => {
+        // Decide se vai aumentar ou diminuir
+        const shouldIncrease = Math.random() > 0.5;
+        let nextCount = prevCount + (shouldIncrease ? 1 : -1);
+
+        // Garante que o número permaneça dentro dos limites
+        if (nextCount > max) nextCount = max - 1;
+        if (nextCount < min) nextCount = min + 1;
+
+        return nextCount;
+      });
+    }, 4500); // Altera o número a cada 4.5 segundos
 
     return () => clearInterval(timer);
   }, []);
