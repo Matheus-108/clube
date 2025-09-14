@@ -23,8 +23,10 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
   const [videoCount, setVideoCount] = useState(0);
   
   const getModelImages = (model: Model): ImagePlaceholder[] => {
-    let imageIds = model.gifImageIds;
-    if (!imageIds || imageIds.length === 0) {
+    let imageIds: string[];
+    if (model.gifImageIds && model.gifImageIds.length > 0) {
+      imageIds = model.gifImageIds;
+    } else {
       imageIds = [model.avatarImageId];
     }
     
@@ -118,14 +120,25 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
                 {modelImages.map((image) => (
                   <CarouselItem key={image.id} className="h-full">
                     <div className="relative h-full w-full">
-                       <Image
-                        src={image.imageUrl}
-                        alt={model.name}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={image.imageHint}
-                        unoptimized={image.imageUrl.endsWith('.gif')}
-                      />
+                      {image.imageUrl.endsWith('.mp4') ? (
+                        <video
+                          src={image.imageUrl}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="object-cover w-full h-full"
+                        />
+                      ) : (
+                        <Image
+                          src={image.imageUrl}
+                          alt={model.name}
+                          fill
+                          className="object-cover"
+                          data-ai-hint={image.imageHint}
+                          unoptimized
+                        />
+                      )}
                     </div>
                   </CarouselItem>
                 ))}
