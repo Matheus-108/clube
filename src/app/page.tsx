@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { models, type Model } from '@/lib/models';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
-import { Loader2, Search, MapPin, Users, Zap, Sparkles, MessageSquare, Circle } from 'lucide-react';
+import { Loader2, Search, MapPin, Users, Zap, Sparkles, MessageSquare, Circle, Flame } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import GifPreview from '@/components/gif-preview';
 import Image from 'next/image';
@@ -129,30 +129,36 @@ export default function Home() {
 
 
           {/* City Search Section */}
-          <Card className="max-w-2xl mx-auto bg-[#1a1a1a] border-gray-800 p-6 rounded-lg shadow-lg">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Input 
-                type="text" 
-                placeholder="Digite sua cidade"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 flex-grow"
-              />
+          <Card className="max-w-md mx-auto bg-transparent border-none p-0">
+            <div className="flex flex-col gap-4">
+              <div className="relative w-full">
+                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                <Input 
+                  type="text" 
+                  placeholder="Digite sua cidade para procurar garotas"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                  className="bg-[#1C1C1C] border-none text-white placeholder:text-gray-500 w-full h-14 pl-12 pr-4 rounded-full text-base"
+                />
+              </div>
               <Button 
                 onClick={handleSearch} 
                 disabled={isLoading}
-                className="bg-[#FFB300] text-black hover:bg-amber-500 font-bold"
+                className="w-full h-[50px] bg-vibrant-red text-white hover-gradient font-bold rounded-full text-base shadow-lg"
               >
                 {isLoading ? (
                   <Loader2 className="animate-spin" />
                 ) : (
-                  <Search className="mr-2"/>
+                  <>
+                    <Flame className="mr-2"/>
+                    Procurar garotas
+                  </>
                 )}
-                Procurar garotas
               </Button>
             </div>
-            {!searchPerformed && <GifPreview />}
+             <p className="text-center text-gray-400 text-xs mt-3">Simulação em tempo real — 18+ apenas.</p>
+             <GifPreview />
           </Card>
 
           {/* Search Results Section */}
