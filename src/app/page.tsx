@@ -104,8 +104,8 @@ export default function Home() {
                 <Image
                     src="https://i.imgur.com/mWeHZtH.png"
                     alt="Modelos do Clube"
-                    width={700}
-                    height={158}
+                    width={400}
+                    height={90}
                     className="object-contain"
                 />
             </div>
