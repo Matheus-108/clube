@@ -94,6 +94,15 @@ export default function Home() {
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="https://i.imgur.com/mWeHZtH.png"
+                alt="Banner"
+                width={300}
+                height={37}
+                className="object-contain"
+              />
+            </div>
             <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl font-body text-white">
               Club do sexo
             </h1>
