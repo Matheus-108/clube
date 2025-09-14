@@ -98,8 +98,8 @@ export default function Home() {
               <Image
                 src="https://i.imgur.com/mWeHZtH.png"
                 alt="Banner"
-                width={300}
-                height={37}
+                width={200}
+                height={25}
                 className="object-contain"
               />
             </div>
