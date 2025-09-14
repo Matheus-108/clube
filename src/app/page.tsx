@@ -106,7 +106,7 @@ export default function Home() {
             <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl font-body text-white">
               Club do sexo
             </h1>
-            <p className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
+            <p className="mt-2 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
               Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
             </p>
           </div>
