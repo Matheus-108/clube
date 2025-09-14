@@ -29,27 +29,16 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
 
   useEffect(() => {
     if (isOpen) {
-      // Numbers from the reference image
       setPhotoCount(889);
       setVideoCount(107);
     }
   }, [isOpen]);
 
-  const InfoCard = ({ icon, title, value }: { icon: React.ReactNode, title: string, value: string | number }) => (
-    <Card className="bg-white/10 border-white/20 text-white backdrop-blur-sm">
-      <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
-        {icon}
-        <p className="text-3xl font-bold">{value}</p>
-        <p className="text-xs text-white/80">{title}</p>
-      </CardContent>
-    </Card>
-  );
-
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl p-0 bg-black/90 backdrop-blur-sm border-none text-white overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-2 h-[90vh] md:h-auto">
-          {/* Left Panel */}
+      <DialogContent className="max-w-6xl p-0 bg-[#0C0C0C] border-none text-white overflow-hidden h-full md:h-auto md:max-h-[90vh] flex flex-col">
+        <div className="grid grid-cols-1 md:grid-cols-2 flex-1 min-h-0">
+          {/* Left Panel - Info */}
           <div className="flex flex-col p-6 md:p-8 overflow-y-auto order-2 md:order-1 bg-[#F1F1F1] text-black">
             <div className="space-y-4">
               <h2 className="font-headline text-5xl font-bold text-black/80">{model.name}</h2>
@@ -113,7 +102,7 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
             </div>
           </div>
           {/* Right Panel - Carousel */}
-          <div className="relative order-1 md:order-2">
+          <div className="relative order-1 md:order-2 h-[50vh] md:h-auto">
             <Carousel className="h-full w-full">
               <CarouselContent className="h-full">
                 {modelImages.map((image) => (
