@@ -41,7 +41,7 @@ export default function SelectionPage() {
               Club do sexo
             </h1>
             <p className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-foreground/80">
-              Entre no Clube do Sexo Digital — fotos, vídeos e chamadas privadas num só lugar.
+              Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
             </p>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
