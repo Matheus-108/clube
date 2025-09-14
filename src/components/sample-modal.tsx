@@ -22,13 +22,9 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
   const [photoCount, setPhotoCount] = useState(0);
   const [videoCount, setVideoCount] = useState(0);
   
-  const getModelImages = (): ImagePlaceholder[] => {
-    if (!model) return [];
-    
-    let imageIds: string[] = [];
-    if (model.gifImageIds.length > 0) {
-      imageIds = model.gifImageIds;
-    } else {
+  const getModelImages = (model: Model): ImagePlaceholder[] => {
+    let imageIds = model.gifImageIds;
+    if (!imageIds || imageIds.length === 0) {
       imageIds = [model.avatarImageId];
     }
     
@@ -37,7 +33,7 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
       .filter((img): img is ImagePlaceholder => !!img);
   };
 
-  const modelImages = getModelImages();
+  const modelImages = isOpen && model ? getModelImages(model) : [];
 
   useEffect(() => {
     if (isOpen) {
