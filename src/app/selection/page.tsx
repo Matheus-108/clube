@@ -17,6 +17,7 @@ export default function SelectionPage() {
   const [isSampleModalOpen, setSampleModalOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<Model>(models[0]);
   const [isMounted, setIsMounted] = useState(false);
+  const [city, setCity] = useState('');
 
   useEffect(() => {
     setIsMounted(true);
@@ -49,8 +50,13 @@ export default function SelectionPage() {
       <div className="flex flex-col min-h-screen bg-background">
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+              Encontre acompanhantes Mulheres em <span className="text-primary">{city || 'sua cidade'}</span>
+            </h1>
+          </div>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-            <SimulatedLocation />
+            <SimulatedLocation onCityChange={setCity} />
             <UrgencyCounter />
           </div>
 
