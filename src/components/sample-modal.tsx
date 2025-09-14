@@ -8,7 +8,7 @@ import { Card, CardContent } from './ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Camera, Video, MapPin, TrendingUp, Star, ShieldCheck, MessageSquare } from 'lucide-react';
 import type { Model } from '@/lib/models';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { PlaceHolderImages, type ImagePlaceholder } from '@/lib/placeholder-images';
 
 interface SampleModalProps {
   isOpen: boolean;
@@ -21,11 +21,18 @@ interface SampleModalProps {
 export default function SampleModal({ isOpen, onOpenChange, model, city, onStartChat }: SampleModalProps) {
   const [photoCount, setPhotoCount] = useState(0);
   const [videoCount, setVideoCount] = useState(0);
-  const modelImages = model.gifImageIds.map(id => PlaceHolderImages.find(img => img.id === id)).filter(Boolean);
-  if (modelImages.length === 0) {
-      const avatarImage = PlaceHolderImages.find(img => img.id === model.avatarImageId);
+  
+  const modelImages: ImagePlaceholder[] = [];
+  if (model.gifImageIds.length > 0) {
+    model.gifImageIds.forEach(id => {
+        const img = PlaceHolderImages.find(pImg => pImg.id === id);
+        if(img) modelImages.push(img);
+    });
+  } else {
+      const avatarImage = PlaceHolderImages.find(pImg => pImg.id === model.avatarImageId);
       if (avatarImage) modelImages.push(avatarImage);
   }
+
 
   useEffect(() => {
     if (isOpen) {
@@ -33,6 +40,8 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
       setVideoCount(107);
     }
   }, [isOpen]);
+
+  if (!model) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -106,7 +115,6 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
             <Carousel className="h-full w-full">
               <CarouselContent className="h-full">
                 {modelImages.map((image) => (
-                  image &&
                   <CarouselItem key={image.id} className="h-full">
                     <div className="relative h-full w-full">
                        <Image
@@ -115,13 +123,18 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
                         fill
                         className="object-cover"
                         data-ai-hint={image.imageHint}
+                        unoptimized={image.imageUrl.endsWith('.gif')}
                       />
                     </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
-              <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
+              {modelImages.length > 1 && (
+                <>
+                    <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
+                    <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
+                </>
+              )}
             </Carousel>
           </div>
         </div>
