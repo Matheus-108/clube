@@ -21,38 +21,36 @@ interface SampleModalProps {
 export default function SampleModal({ isOpen, onOpenChange, model, city, onStartChat }: SampleModalProps) {
   const [photoCount, setPhotoCount] = useState(0);
   const [videoCount, setVideoCount] = useState(0);
+  const [modelImages, setModelImages] = useState<ImagePlaceholder[]>([]);
   
-  const getModelImages = (model: Model): ImagePlaceholder[] => {
-    // Find the main avatar image object
-    const avatarImage = PlaceHolderImages.find(pImg => pImg.id === model.avatarImageId);
-    
-    // Find all the GIF image objects
-    const gifImages = (model.gifImageIds || [])
-      .map(id => PlaceHolderImages.find(pImg => pImg.id === id))
-      .filter((img): img is ImagePlaceholder => !!img);
-      
-    // Start with the avatar image if it exists
-    const allImages: ImagePlaceholder[] = avatarImage ? [avatarImage] : [];
-    
-    // Add the GIF images
-    allImages.push(...gifImages);
-
-    // Remove duplicates by id, keeping the first occurrence (which will be the avatar if present)
-    const uniqueImages = allImages.filter((image, index, self) =>
-      index === self.findIndex((t) => t.id === image.id)
-    );
-    
-    return uniqueImages;
-  };
-
-  const modelImages = isOpen && model ? getModelImages(model) : [];
-
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && model) {
+      const getModelImages = (model: Model): ImagePlaceholder[] => {
+        const avatarImage = PlaceHolderImages.find(pImg => pImg.id === model.avatarImageId);
+        const gifImages = (model.gifImageIds || [])
+          .map(id => PlaceHolderImages.find(pImg => pImg.id === id))
+          .filter((img): img is ImagePlaceholder => !!img);
+        
+        const allImages: ImagePlaceholder[] = [];
+        if (avatarImage) {
+          allImages.push(avatarImage);
+        }
+        allImages.push(...gifImages);
+
+        const uniqueImages = allImages.filter((image, index, self) =>
+          index === self.findIndex((t) => t.id === image.id)
+        );
+        
+        return uniqueImages;
+      };
+      
+      setModelImages(getModelImages(model));
       setPhotoCount(889);
       setVideoCount(107);
+    } else {
+        setModelImages([]);
     }
-  }, [isOpen]);
+  }, [isOpen, model]);
 
   if (!model) return null;
 
@@ -124,43 +122,45 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
             </div>
           </div>
           {/* Right Panel - Carousel */}
-          <div className="relative order-1 md:order-2 h-[50vh] md:h-auto">
-            <Carousel className="h-full w-full">
-              <CarouselContent className="h-full">
-                {modelImages.map((image) => (
-                  <CarouselItem key={image.id} className="h-full">
-                    <div className="relative h-full w-full">
-                      {image.imageUrl.endsWith('.mp4') ? (
-                        <video
-                          src={image.imageUrl}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="object-cover w-full h-full"
-                          key={image.id}
-                        />
-                      ) : (
-                        <Image
-                          src={image.imageUrl}
-                          alt={model.name}
-                          fill
-                          className="object-cover"
-                          data-ai-hint={image.imageHint}
-                          unoptimized
-                        />
-                      )}
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              {modelImages.length > 1 && (
-                <>
-                    <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
-                    <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
-                </>
-              )}
-            </Carousel>
+          <div className="relative order-1 md:order-2 h-[50vh] md:h-auto bg-black">
+            {modelImages.length > 0 && (
+                <Carousel className="h-full w-full">
+                <CarouselContent className="h-full">
+                    {modelImages.map((image) => (
+                    <CarouselItem key={image.id} className="h-full">
+                        <div className="relative h-full w-full">
+                        {image.imageUrl.endsWith('.mp4') ? (
+                            <video
+                            src={image.imageUrl}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="object-contain w-full h-full"
+                            key={image.id}
+                            />
+                        ) : (
+                            <Image
+                            src={image.imageUrl}
+                            alt={model.name}
+                            fill
+                            className="object-contain"
+                            data-ai-hint={image.imageHint}
+                            unoptimized
+                            />
+                        )}
+                        </div>
+                    </CarouselItem>
+                    ))}
+                </CarouselContent>
+                {modelImages.length > 1 && (
+                    <>
+                        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
+                        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white border-none hover:bg-black/75" />
+                    </>
+                )}
+                </Carousel>
+            )}
           </div>
         </div>
       </DialogContent>
