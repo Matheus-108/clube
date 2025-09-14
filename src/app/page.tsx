@@ -7,6 +7,7 @@ import ModelCard from '@/components/model-card';
 import ChatModal from '@/components/chat-modal';
 import SampleModal from '@/components/sample-modal';
 import InteractivePopup from '@/components/interactive-popup';
+import SearchLoadingModal from '@/components/search-loading-modal';
 import { Button } from '@/components/ui/button';
 import { models, type Model } from '@/lib/models';
 import Link from 'next/link';
@@ -34,7 +35,7 @@ export default function Home() {
   
   // State for city search
   const [city, setCity] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [shuffledModels, setShuffledModels] = useState<Model[]>([]);
   const [newModelsCount, setNewModelsCount] = useState(0);
@@ -80,16 +81,19 @@ export default function Home() {
   }
 
   const handleSearch = () => {
-    if (!city) return;
-    setIsLoading(true);
+    if (!city || isSearchLoading) return;
+    setIsSearchLoading(true);
     setSearchPerformed(false);
+
+    // Total duration for the loading modal
+    const totalLoadingTime = 5000; // 5 seconds for all steps
 
     setTimeout(() => {
       setNewModelsCount(Math.floor(Math.random() * 3) + 1);
       setShuffledModels(shuffleArray([...models]).slice(0, 11));
-      setIsLoading(false);
+      setIsSearchLoading(false);
       setSearchPerformed(true);
-    }, 2000);
+    }, totalLoadingTime);
   };
 
   if (!isMounted) {
@@ -152,10 +156,10 @@ export default function Home() {
               </div>
               <Button 
                 onClick={handleSearch} 
-                disabled={isLoading}
+                disabled={isSearchLoading}
                 className="w-full h-[50px] bg-vibrant-red text-white hover-gradient font-bold rounded-full text-base shadow-lg"
               >
-                {isLoading ? (
+                {isSearchLoading ? (
                   <Loader2 className="animate-spin" />
                 ) : (
                   <>
@@ -170,14 +174,7 @@ export default function Home() {
           </Card>
 
           {/* Search Results Section */}
-          {isLoading && (
-            <div className="text-center mt-8 flex items-center justify-center gap-2 text-white/80">
-              <Loader2 className="animate-spin h-5 w-5" />
-              <span>Buscando modelos em {city}...</span>
-            </div>
-          )}
-
-          {searchPerformed && (
+          {searchPerformed && !isSearchLoading && (
             <div className="mt-12">
               <Card className="max-w-3xl mx-auto bg-transparent border-none text-center mb-8">
                   <div className="flex items-center justify-center gap-2 text-xl font-semibold">
@@ -236,6 +233,8 @@ export default function Home() {
           onStartChat={handleOpenChat}
         />
       )}
+
+      <SearchLoadingModal isOpen={isSearchLoading} city={city} />
 
       <InteractivePopup onOpenChat={handleOpenChat} />
     </>
