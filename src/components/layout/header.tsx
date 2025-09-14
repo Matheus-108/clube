@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export default function Header() {
   return (
-    <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-40 border-b">
+    <header className="bg-black/80 backdrop-blur-sm sticky top-0 z-40 border-b border-white/10">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
@@ -16,7 +16,7 @@ export default function Header() {
             className="object-contain"
           />
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
             <Link href="https://nitropaycheckout.com.br/checkout/5a5063d8-19ac-46d7-8257-b1f1393bcdd7">Quero Acesso</Link>
           </Button>
