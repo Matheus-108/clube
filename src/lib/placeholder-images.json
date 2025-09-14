@@ -38,6 +38,9 @@
     { "id": "model-carol-moraes-gif-1", "description": "GIF of model Carol Moraes", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman posing" },
     
     { "id": "model-eliane-figueiredo", "description": "Portrait of model Eliane Figueiredo", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman selfie" },
-    { "id": "model-eliane-figueiredo-gif-1", "description": "GIF of model Eliane Figueiredo", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman selfie" }
+    { "id": "model-eliane-figueiredo-gif-1", "description": "GIF of model Eliane Figueiredo", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman selfie" },
+    { "id": "gif-preview-1", "description": "Preview GIF 1", "imageUrl": "https://i.imgur.com/KcsxxaJ.gif", "imageHint": "woman dancing" },
+    { "id": "gif-preview-2", "description": "Preview GIF 2", "imageUrl": "https://i.imgur.com/qPML5Ud.gif", "imageHint": "woman posing" },
+    { "id": "gif-preview-3", "description": "Preview GIF 3", "imageUrl": "https://i.imgur.com/m1YxJwj.gif", "imageHint": "woman selfie" }
   ]
 }

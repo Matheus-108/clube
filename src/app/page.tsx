@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Loader2, Search, MapPin, Users, Zap, Sparkles, MessageSquare, Circle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import GifPreview from '@/components/gif-preview';
 
 const shuffleArray = <T,>(array: T[]): T[] => {
   let currentIndex = array.length, randomIndex;
@@ -185,6 +186,7 @@ export default function Home() {
                 >
                   <Link href="/checkout">Ver modelos de {city} agora 🔥</Link>
                 </Button>
+                 <GifPreview />
               </div>
             </div>
           )}
