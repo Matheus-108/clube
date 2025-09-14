@@ -12,18 +12,22 @@ export default function SimulatedLocation({ onCityChange }: SimulatedLocationPro
   const [city, setCity] = useState('Carregando...');
 
   useEffect(() => {
-    fetch('https://ipapi.co/json/')
-      .then(res => res.json())
-      .then(data => {
-        const detectedCity = data.city || 'São Paulo';
-        setCity(detectedCity);
-        onCityChange(detectedCity);
-      })
-      .catch(() => {
-        const fallbackCity = 'São Paulo';
-        setCity(fallbackCity);
-        onCityChange(fallbackCity);
-      });
+    // This component is no longer used in the main page flow but kept for potential future use.
+    const fetchCity = () => {
+      fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(data => {
+          const detectedCity = data.city || 'São Paulo';
+          setCity(detectedCity);
+          onCityChange(detectedCity);
+        })
+        .catch(() => {
+          const fallbackCity = 'São Paulo';
+          setCity(fallbackCity);
+          onCityChange(fallbackCity);
+        });
+    }
+    // fetchCity(); // Disabled for now
   }, [onCityChange]);
 
   return (
