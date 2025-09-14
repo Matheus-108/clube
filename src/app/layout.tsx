@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Clube HOT All Access',
@@ -30,6 +31,12 @@ export default function RootLayout({
           {children}
           <Toaster />
         </ThemeProvider>
+        <Script 
+            src="https://cdn.jsdelivr.net/gh/xTracky/static/utm-handler.js"
+            data-token="fb353bf0-d7af-43d9-b27e-40b9e2466f15"
+            data-click-id-param="click_id"
+            strategy="afterInteractive"
+        />
       </body>
     </html>
   );
