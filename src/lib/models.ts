@@ -20,5 +20,8 @@ export const models: Model[] = [
   { id: 'isabella-rossi', name: 'Isabella Rossi', avatarImageId: 'model-isabella-rossi', gifImageIds: [], isOnline: false, lastSeen: 'ativo há 25 min' },
   { id: 'sofia-laurent', name: 'Sofia Laurent', avatarImageId: 'model-sofia-laurent', gifImageIds: ['model-sofia-laurent-gif-1'], isOnline: true },
   { id: 'carol-moraes', name: 'Carol Moraes', avatarImageId: 'model-carol-moraes', gifImageIds: ['model-carol-moraes-gif-1'], isOnline: false, lastSeen: 'ativo há 3 min' },
-  { id: 'eliane-figueiredo', name: 'Eliane Figueiredo', avatarImageId: 'model-eliane-figueiredo', gifImageIds: ['model-eliane-figueiredo-gif-1'], isOnline: true }
+  { id: 'eliane-figueiredo', name: 'Eliane Figueiredo', avatarImageId: 'model-eliane-figueiredo', gifImageIds: ['model-eliane-figueiredo-gif-1'], isOnline: true },
+  { id: 'bia-santos', name: 'Bia Santos', avatarImageId: 'model-bia-santos', gifImageIds: [], isOnline: true },
+  { id: 'julia-costa', name: 'Julia Costa', avatarImageId: 'model-julia-costa', gifImageIds: [], isOnline: true },
+  { id: 'martina-costa', name: 'Martina Costa', avatarImageId: 'model-martina-costa', gifImageIds: [], isOnline: false, lastSeen: 'ativo há 15 min' }
 ];

@@ -12,8 +12,8 @@
     { "id": "model-rebeca-martins", "description": "Portrait of model Rebeca Martins", "imageUrl": "https://i.imgur.com/xs5p9qO.gif", "imageHint": "woman posing" },
     { "id": "model-rebeca-martins-gif-1", "description": "GIF of model Rebeca Martins", "imageUrl": "https://i.imgur.com/xs5p9qO.gif", "imageHint": "woman posing" },
     
-    { "id": "model-camila-santos", "description": "Portrait of model Camila Santos", "imageUrl": "https://i.imgur.com/xs5p9qO.gif", "imageHint": "woman smiling" },
-    { "id": "model-camila-santos-gif-1", "description": "GIF of model Camila Santos", "imageUrl": "https://i.imgur.com/xs5p9qO.gif", "imageHint": "woman smiling" },
+    { "id": "model-camila-santos", "description": "Portrait of model Camila Santos", "imageUrl": "https://i.imgur.com/WUVynGk.png", "imageHint": "woman smiling" },
+    { "id": "model-camila-santos-gif-1", "description": "GIF of model Camila Santos", "imageUrl": "https://i.imgur.com/WUVynGk.png", "imageHint": "woman smiling" },
 
     { "id": "model-julia-lima", "description": "Portrait of model Júlia Lima", "imageUrl": "https://i.imgur.com/XHxrKUw.jpeg", "imageHint": "woman selfie" },
     
@@ -34,11 +34,16 @@
     { "id": "model-sofia-laurent", "description": "Portrait of model Sofia Laurent", "imageUrl": "https://i.imgur.com/BxB79Vl.gif", "imageHint": "woman smiling" },
     { "id": "model-sofia-laurent-gif-1", "description": "GIF of model Sofia Laurent", "imageUrl": "https://i.imgur.com/BxB79Vl.gif", "imageHint": "woman smiling" },
     
-    { "id": "model-carol-moraes", "description": "Portrait of model Carol Moraes", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman posing" },
-    { "id": "model-carol-moraes-gif-1", "description": "GIF of model Carol Moraes", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman posing" },
+    { "id": "model-carol-moraes", "description": "Portrait of model Carol Moraes", "imageUrl": "https://i.imgur.com/m1YxJwj.gif", "imageHint": "woman posing" },
+    { "id": "model-carol-moraes-gif-1", "description": "GIF of model Carol Moraes", "imageUrl": "https://i.imgur.com/m1YxJwj.gif", "imageHint": "woman posing" },
     
     { "id": "model-eliane-figueiredo", "description": "Portrait of model Eliane Figueiredo", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman selfie" },
     { "id": "model-eliane-figueiredo-gif-1", "description": "GIF of model Eliane Figueiredo", "imageUrl": "https://i.imgur.com/cxjOYJe.gif", "imageHint": "woman selfie" },
+
+    { "id": "model-bia-santos", "description": "Portrait of model Bia Santos", "imageUrl": "https://i.imgur.com/wdYjwCu.jpeg", "imageHint": "woman selfie" },
+    { "id": "model-julia-costa", "description": "Portrait of model Julia Costa", "imageUrl": "https://i.imgur.com/drnZ9D4.jpeg", "imageHint": "woman posing" },
+    { "id": "model-martina-costa", "description": "Portrait of model Martina Costa", "imageUrl": "https://i.imgur.com/rqcpbl5.png", "imageHint": "woman portrait" },
+    
     { "id": "gif-preview-1", "description": "Preview GIF 1", "imageUrl": "https://i.imgur.com/KcsxxaJ.gif", "imageHint": "woman dancing" },
     { "id": "gif-preview-2", "description": "Preview GIF 2", "imageUrl": "https://i.imgur.com/qPML5Ud.gif", "imageHint": "woman posing" },
     { "id": "gif-preview-3", "description": "Preview GIF 3", "imageUrl": "https://i.imgur.com/m1YxJwj.gif", "imageHint": "woman selfie" }
