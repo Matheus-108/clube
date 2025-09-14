@@ -57,7 +57,7 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl p-0 bg-[#0C0C0C] border-none text-white overflow-hidden h-full md:h-auto md:max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-6xl w-full p-0 bg-[#0C0C0C] border-none text-white overflow-hidden h-full md:h-auto md:max-h-[90vh] flex flex-col">
         <div className="grid grid-cols-1 md:grid-cols-2 flex-1 min-h-0">
           {/* Left Panel - Info */}
           <div className="flex flex-col p-6 md:p-8 overflow-y-auto order-2 md:order-1 bg-[#F1F1F1] text-black">
