@@ -92,9 +92,18 @@ export default function InteractivePopup({ onOpenChat }: InteractivePopupProps) 
             </Avatar>
 
             <h2 className="text-2xl font-bold">
-              {selectedModel.name} está online 🔥
+              {selectedModel.name} te cutucou
             </h2>
-            <p className="mt-2 text-white/80">
+            
+            <div className="flex items-center justify-center gap-2 mt-2">
+                <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                </span>
+                <span className="text-sm font-semibold text-green-400">Online</span>
+            </div>
+
+            <p className="mt-4 text-white/80">
               Ela quer conversar com você e mandar uma prévia exclusiva agora.
             </p>
 
@@ -105,10 +114,6 @@ export default function InteractivePopup({ onOpenChat }: InteractivePopupProps) 
               Liberar Chat
             </Button>
           </div>
-
-          <p className="text-center text-xs text-white/50 pb-4 px-4">
-            Interação simulada para experiência. 18+ apenas.
-          </p>
 
           <button
             onClick={handleClose}
