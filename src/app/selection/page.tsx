@@ -25,7 +25,7 @@ export default function SelectionPage() {
         const randomModel = models[Math.floor(Math.random() * models.length)];
         handleChatClick(randomModel);
       }
-    }, 10000); // 10 seconds
+    }, 60000); // 60 seconds
 
     return () => clearTimeout(timer);
   }, [isChatModalOpen, isSampleModalOpen]);
