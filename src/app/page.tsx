@@ -35,8 +35,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [shuffledModels, setShuffledModels] = useState<Model[]>([]);
-  const [onlineGirlsCount, setOnlineGirlsCount] = useState(94);
   const [newModelsCount, setNewModelsCount] = useState(0);
+  const [onlineGirlsCount, setOnlineGirlsCount] = useState(94);
   const [newTodayCount, setNewTodayCount] = useState(12);
 
   useEffect(() => {
@@ -92,9 +92,9 @@ export default function Home() {
     <>
       <div className="flex flex-col min-h-screen bg-black text-white">
         <Header />
-        <main className="flex-1 container mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <div className="flex justify-center">
+        <main className="flex-1 container mx-auto px-4 pt-2 pb-8">
+          <div className="text-center">
+            <div className="flex justify-center -mb-2">
               <Image
                 src="https://i.imgur.com/mWeHZtH.png"
                 alt="Banner"
@@ -106,13 +106,13 @@ export default function Home() {
             <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl font-body text-white">
               Club do sexo
             </h1>
-            <p className="mt-2 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
+            <p className="mt-1 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
               Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
             </p>
           </div>
 
           {/* Stats Section */}
-          <div className="flex justify-center items-center gap-4 sm:gap-8 mb-8 text-sm sm:text-base">
+          <div className="flex justify-center items-center gap-4 sm:gap-8 my-8 text-sm sm:text-base">
                 <div className="flex items-center gap-2">
                     <Circle className="w-3 h-3 text-green-500 fill-green-500" />
                     <span className="font-bold text-green-400">{onlineGirlsCount} Garotas Online</span>
