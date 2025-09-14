@@ -36,6 +36,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   const [showOptions, setShowOptions] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const hasStartedChat = useRef(false);
 
   const modelImage = PlaceHolderImages.find(img => img.id === model.avatarImageId);
 
@@ -54,19 +55,15 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     
     messageList.forEach((msg, index) => {
         setTimeout(() => {
-            setIsTyping(false);
+            setIsTyping(index < messageList.length - 1);
             addMessage({ id: Date.now() + index, from: 'model', text: msg.text, isCheckoutButton: msg.isCheckoutButton });
-
-            // Show typing indicator before the next message if it's not the last one
-            if (index < messageList.length - 1) {
-                setTimeout(() => setIsTyping(true), 1000);
-            }
-        }, index * delay);
+        }, (index + 1) * delay);
     });
   }
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !hasStartedChat.current) {
+        hasStartedChat.current = true;
         setMessages([]);
         setShowOptions(false);
         setIsTyping(true);
@@ -90,7 +87,8 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
 
         initialSequence();
 
-    } else {
+    } else if (!isOpen) {
+      hasStartedChat.current = false;
       setMessages([]);
       setShowOptions(false);
       setIsTyping(false);
