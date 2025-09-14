@@ -32,7 +32,7 @@ export default function HeroSection() {
           Preview em GIFs. Escolha, pague e agende sua chamada privada.
         </p>
         <Button asChild size="lg" className="mt-10 bg-accent text-accent-foreground hover:bg-accent/90 text-lg font-bold shadow-lg transform hover:scale-105 transition-transform">
-          <Link href="/selection">Quero Acesso</Link>
+          <Link href="/">Quero Acesso</Link>
         </Button>
       </div>
     </section>

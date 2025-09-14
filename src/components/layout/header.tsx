@@ -18,7 +18,7 @@ export default function Header() {
         </Link>
         <div className="flex items-center gap-2">
           <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-            <Link href="/selection">Quero Acesso</Link>
+            <Link href="/">Quero Acesso</Link>
           </Button>
           <ThemeToggle />
         </div>
