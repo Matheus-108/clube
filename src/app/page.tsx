@@ -5,7 +5,6 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import ModelCard from '@/components/model-card';
 import ChatModal from '@/components/chat-modal';
-import SampleModal from '@/components/sample-modal';
 import InteractivePopup from '@/components/interactive-popup';
 import SearchLoadingModal from '@/components/search-loading-modal';
 import { Button } from '@/components/ui/button';
@@ -29,7 +28,6 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 export default function Home() {
   const [isChatModalOpen, setChatModalOpen] = useState(false);
-  const [isSampleModalOpen, setSampleModalOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<Model | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   
@@ -72,13 +70,7 @@ export default function Home() {
   const handleOpenChat = (model: Model) => {
     setSelectedModel(model);
     setChatModalOpen(true);
-    setSampleModalOpen(false);
   };
-  
-  const handleOpenSample = (model: Model) => {
-    setSelectedModel(model);
-    setSampleModalOpen(true);
-  }
 
   const handleSearch = () => {
     if (!city || isSearchLoading) return;
@@ -109,7 +101,7 @@ export default function Home() {
             <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl font-body text-white">
               Clube do Sexo
             </h1>
-            <p className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
+            <p className="mt-6 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
               Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
             </p>
           </div>
@@ -186,7 +178,6 @@ export default function Home() {
                     key={model.id}
                     model={model}
                     onChatClick={handleOpenChat}
-                    onSampleClick={handleOpenSample}
                   />
                 ))}
               </div>
@@ -218,16 +209,6 @@ export default function Home() {
           isOpen={isChatModalOpen}
           onOpenChange={setChatModalOpen}
           model={selectedModel}
-        />
-      )}
-      
-      {selectedModel && (
-        <SampleModal
-          isOpen={isSampleModalOpen}
-          onOpenChange={setSampleModalOpen}
-          model={selectedModel}
-          city={city}
-          onStartChat={handleOpenChat}
         />
       )}
 
