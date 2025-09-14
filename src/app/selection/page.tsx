@@ -37,9 +37,8 @@ export default function SelectionPage() {
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              Encontre acompanhantes Mulheres em{' '}
-              <span className="text-primary">{city || 'sua cidade'}</span>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl font-headline text-primary">
+              Entre no Clube do Sexo Digital — fotos, vídeos e chamadas privadas num só lugar.
             </h1>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
