@@ -37,7 +37,7 @@ export default function SelectionPage() {
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl font-headline text-white">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl font-body text-white">
               Entre no Clube do Sexo Digital — fotos, vídeos e chamadas privadas num só lugar.
             </h1>
           </div>
