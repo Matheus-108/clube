@@ -22,17 +22,22 @@ export default function SampleModal({ isOpen, onOpenChange, model, city, onStart
   const [photoCount, setPhotoCount] = useState(0);
   const [videoCount, setVideoCount] = useState(0);
   
-  const modelImages: ImagePlaceholder[] = [];
-  if (model.gifImageIds.length > 0) {
-    model.gifImageIds.forEach(id => {
-        const img = PlaceHolderImages.find(pImg => pImg.id === id);
-        if(img) modelImages.push(img);
-    });
-  } else {
-      const avatarImage = PlaceHolderImages.find(pImg => pImg.id === model.avatarImageId);
-      if (avatarImage) modelImages.push(avatarImage);
-  }
+  const getModelImages = (): ImagePlaceholder[] => {
+    if (!model) return [];
+    
+    let imageIds: string[] = [];
+    if (model.gifImageIds.length > 0) {
+      imageIds = model.gifImageIds;
+    } else {
+      imageIds = [model.avatarImageId];
+    }
+    
+    return imageIds
+      .map(id => PlaceHolderImages.find(pImg => pImg.id === id))
+      .filter((img): img is ImagePlaceholder => !!img);
+  };
 
+  const modelImages = getModelImages();
 
   useEffect(() => {
     if (isOpen) {
