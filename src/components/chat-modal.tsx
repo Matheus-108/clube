@@ -15,6 +15,13 @@ type ChatMessage = {
   from: 'model' | 'user';
   text: string;
   isCheckoutButton?: boolean;
+  checkoutLink?: string;
+};
+
+type ChatChoice = {
+    texto: string;
+    respostaUsuario: string;
+    proxima: ({ modelo: string; delay: number; cta?: undefined; } | { modelo: string; cta: { texto: string; link: string; }; delay?: undefined; })[];
 };
 
 interface ChatModalProps {
@@ -23,75 +30,136 @@ interface ChatModalProps {
   model: Model;
 }
 
-const initialOptions = [
-    { key: 'see', text: 'Sim, quero ver 👀' },
-    { key: 'more-info', text: 'Me conta mais' },
-    { key: 'only-photos', text: 'Só fotos por enquanto' },
-];
-
-
 export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [showOptions, setShowOptions] = useState(false);
+  const [currentOptions, setCurrentOptions] = useState<ChatChoice[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const hasStartedChat = useRef(false);
+  const chatFlowHasStarted = useRef(false);
 
+  const checkoutLink = "https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468";
+
+  const getChatFlow = (modelName: string) => [
+    {
+      modelo: `Oi 😘 eu sou a ${modelName}, vi que você tá online agora...`,
+      delay: 1500
+    },
+    {
+      modelo: "Quer que eu te mostre uma prévia exclusiva só sua? 🔥",
+      delay: 2000,
+      escolhas: [
+        {
+          texto: "Sim, claro 😏",
+          respostaUsuario: "Sim, claro 😏",
+          proxima: [
+            {
+              modelo: "Adoro quem é direto assim 😈",
+              delay: 1200
+            },
+            {
+              modelo: `Dentro do Clube do Sexo eu libero fotos, vídeos íntimos e a gente pode conversar muito mais em privado comigo, ${modelName} 😏`,
+              delay: 1500
+            },
+            {
+              modelo: "Quer liberar seu acesso agora?",
+              cta: {
+                texto: "👉 Entrar no Clube Agora",
+                link: checkoutLink
+              }
+            }
+          ]
+        },
+        {
+          texto: "Me conta mais",
+          respostaUsuario: "Me conta mais",
+          proxima: [
+            {
+              modelo: `É simples: no Clube você encontra fotos secretas, vídeos quentes e pode falar comigo, ${modelName}, em privado 😏`,
+              delay: 1500
+            },
+            {
+              modelo: "E eu tô online agora, esperando por você...",
+              delay: 1200
+            },
+            {
+              modelo: "Quer liberar seu acesso agora?",
+              cta: {
+                texto: "👉 Entrar no Clube Agora",
+                link: checkoutLink
+              }
+            }
+          ]
+        },
+        {
+          texto: "Só fotos por enquanto",
+          respostaUsuario: "Só fotos por enquanto",
+          proxima: [
+            {
+              modelo: "Hmmm tímido 😌 adoro isso.",
+              delay: 1200
+            },
+            {
+              modelo: `Tenho um pack exclusivo só pros membros... nada de conteúdo solto por aí 👀 Quer ver o meu, ${modelName}?`,
+              delay: 1500
+            },
+            {
+              modelo: "Quer que eu te mostre agora?",
+              cta: {
+                texto: "👉 Ver prévia exclusiva",
+                link: checkoutLink
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ];
+  
   const modelImage = PlaceHolderImages.find(img => img.id === model.avatarImageId);
 
-  // Function to add a message and play sound
-  const addMessage = (message: ChatMessage) => {
-    setMessages(prev => [...prev, message]);
+  const addMessage = (message: Omit<ChatMessage, 'id'>) => {
+    setMessages(prev => [...prev, { ...message, id: prev.length + 1 }]);
     if (message.from === 'model' && audioRef.current) {
         audioRef.current.play().catch(console.error);
     }
   }
 
-  // Function to chain model messages with typing delay
-  const sendModelMessages = (messageList: { text: string, isCheckoutButton?: boolean }[]) => {
-    setIsTyping(true);
-    let delay = 2500;
-    
-    messageList.forEach((msg, index) => {
-        setTimeout(() => {
-            setIsTyping(index < messageList.length - 1);
-            addMessage({ id: Date.now() + index, from: 'model', text: msg.text, isCheckoutButton: msg.isCheckoutButton });
-        }, (index + 1) * delay);
-    });
+  const runFlow = (flow: any[], currentDelay = 0) => {
+      flow.forEach((step, index) => {
+          const stepDelay = currentDelay + (step.delay || 0);
+          setTimeout(() => {
+              setIsTyping(true);
+          }, stepDelay - 500);
+
+          setTimeout(() => {
+              setIsTyping(false);
+              if (step.modelo) {
+                addMessage({
+                    from: 'model',
+                    text: step.modelo,
+                    isCheckoutButton: !!step.cta,
+                    checkoutLink: step.cta?.link
+                });
+              }
+              if (step.escolhas) {
+                  setCurrentOptions(step.escolhas);
+              }
+          }, stepDelay);
+      });
+      return currentDelay + flow.reduce((acc, step) => acc + (step.delay || 0), 0);
   }
 
   useEffect(() => {
-    if (isOpen && !hasStartedChat.current) {
-        hasStartedChat.current = true;
-        setMessages([]);
-        setShowOptions(false);
-        setIsTyping(true);
-
-        const initialSequence = () => {
-            setTimeout(() => {
-                setIsTyping(false);
-                addMessage({ id: 1, from: 'model', text: `Oi 😘 sou a ${model.name}. Vi que você tá por aqui agora…` });
-            }, 1500);
-
-            setTimeout(() => {
-                setIsTyping(true);
-            }, 2500);
-            
-            setTimeout(() => {
-                setIsTyping(false);
-                addMessage({ id: 2, from: 'model', text: 'Quer uma prévia só sua? 🔥' });
-                setShowOptions(true);
-            }, 5500);
-        };
-
-        initialSequence();
-
-    } else if (!isOpen) {
-      hasStartedChat.current = false;
+    if (isOpen && !chatFlowHasStarted.current) {
+      chatFlowHasStarted.current = true;
       setMessages([]);
-      setShowOptions(false);
-      setIsTyping(false);
+      setCurrentOptions([]);
+      setIsTyping(true);
+      const flow = getChatFlow(model.name);
+      runFlow(flow);
+    } else if (!isOpen) {
+      chatFlowHasStarted.current = false; // Reset on close
     }
   }, [isOpen, model.name]);
 
@@ -100,43 +168,16 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   }, [messages, isTyping]);
 
 
-  const handleOptionSelect = (option: {key: string; text: string}) => {
-    setShowOptions(false);
-    addMessage({ id: Date.now(), from: 'user', text: option.text });
-
-    let responseMessages: { text: string, isCheckoutButton?: boolean }[] = [];
-
-    switch(option.key) {
-        case 'see':
-            responseMessages = [
-                { text: 'Adoro quando alguém direto assim aparece 😏.' },
-                { text: 'Tenho fotos e vídeos exclusivos, e tô disponível no Clube do Sexo pra conversar mais em privado agora mesmo.'},
-                { text: 'Quer entrar?', isCheckoutButton: true }
-            ];
-            break;
-        case 'more-info':
-            responseMessages = [
-                { text: 'É simples: no Clube você tem acesso a fotos + vídeos + pode conversar comigo em privado quando quiser 🔥.' },
-                { text: 'Só membros entram… e eu tô online agora 👄.' },
-                { text: 'Quer liberar seu acesso?', isCheckoutButton: true }
-            ];
-            break;
-        case 'only-photos':
-            responseMessages = [
-                { text: 'Hmmm… tímido 😌 gosto disso.' },
-                { text: 'Eu tenho um pack exclusivo que só libero dentro do Clube. Nada de conteúdo solto por aí.' },
-                { text: 'Quer ver essa prévia exclusiva?', isCheckoutButton: true }
-            ];
-            break;
-    }
-    
-    sendModelMessages(responseMessages);
+  const handleOptionSelect = (option: ChatChoice) => {
+    setCurrentOptions([]);
+    addMessage({ from: 'user', text: option.respostaUsuario });
+    setIsTyping(true);
+    runFlow(option.proxima, 1000);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="whatsapp-modal p-0 gap-0">
-        {/* Header */}
         <header className="bg-whatsapp-green-dark p-3 flex items-center gap-3 shadow-md z-10">
            <Avatar>
               {modelImage && <AvatarImage src={modelImage.imageUrl} alt={model.name} data-ai-hint={modelImage.imageHint} />}
@@ -151,7 +192,6 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
           </button>
         </header>
         
-        {/* Chat Area */}
         <div className="bg-whatsapp-bg flex-1 overflow-y-auto p-4 flex flex-col">
             <div className="flex-1 space-y-3">
               {messages.map((message, index) => (
@@ -162,29 +202,27 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
                         </div>
                     )}
                     <div
-                    className={cn(
-                        'flex items-end gap-2 animate-slide-in',
-                        message.from === 'user' ? 'justify-end' : 'justify-start'
-                    )}
-                    >
-                    {message.from === 'model' && (
-                        <div className="w-6"></div>
-                    )}
-                    <div
                         className={cn(
-                        'max-w-[80%] rounded-lg px-3 py-2 shadow-sm',
-                        message.from === 'user'
-                            ? 'bg-white'
-                            : 'bg-whatsapp-message-out'
+                            'flex items-end gap-2 animate-slide-in',
+                            message.from === 'user' ? 'justify-end' : 'justify-start'
                         )}
                     >
-                        <p className="text-sm text-gray-800" style={{whiteSpace: 'pre-wrap'}}>{message.text}</p>
-                        {message.isCheckoutButton && (
-                        <Button asChild size="sm" className="mt-2 w-full bg-vibrant-red text-white font-bold hover:bg-red-500">
-                            <Link href="https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468">Entrar no Clube Agora 🔥</Link>
-                        </Button>
-                        )}
-                    </div>
+                        {message.from === 'model' && (<div className="w-6"></div>)}
+                        <div
+                            className={cn(
+                            'max-w-[80%] rounded-lg px-3 py-2 shadow-sm',
+                            message.from === 'user'
+                                ? 'bg-white'
+                                : 'bg-whatsapp-message-out'
+                            )}
+                        >
+                            <p className="text-sm text-gray-800" style={{whiteSpace: 'pre-wrap'}}>{message.text}</p>
+                            {message.isCheckoutButton && message.checkoutLink && (
+                            <Button asChild size="sm" className="mt-2 w-full bg-vibrant-red text-white font-bold hover:bg-red-500">
+                                <Link href={message.checkoutLink}>Entrar no Clube Agora 🔥</Link>
+                            </Button>
+                            )}
+                        </div>
                     </div>
                 </Fragment>
               ))}
@@ -202,12 +240,11 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Response options */}
-            {showOptions && (
+            {currentOptions.length > 0 && (
                 <div className="mt-4 space-y-2 animate-fade-in">
-                    {initialOptions.map(option => (
-                        <button key={option.key} onClick={() => handleOptionSelect(option)} className="w-full text-left bg-white rounded-full p-3 shadow-sm flex items-center hover:bg-gray-100 transition-colors">
-                            <span className="flex-1 text-primary text-sm">{option.text}</span>
+                    {currentOptions.map((option, index) => (
+                        <button key={index} onClick={() => handleOptionSelect(option)} className="w-full text-left bg-white rounded-full p-3 shadow-sm flex items-center hover:bg-gray-100 transition-colors">
+                            <span className="flex-1 text-primary text-sm">{option.texto}</span>
                             <Send size={16} className="text-primary/70 mr-2"/>
                         </button>
                     ))}
@@ -215,7 +252,6 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
             )}
         </div>
         
-        {/* Footer */}
         <footer className="bg-whatsapp-bg text-center py-2">
           <p className="text-xs text-gray-500">
             Conversa simulada para experiência — agendamentos reais são digitais.
