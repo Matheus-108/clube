@@ -65,7 +65,7 @@ export default function ModelCard({ model, onChatClick }: ModelCardProps) {
               <Eye className="mr-2" />
               Ver Prévia
             </Button>
-            <Button onClick={() => onChatClick(model)} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+            <Button onClick={() => onChatClick(model)} className="w-full bg-whatsapp-green-light text-black hover:bg-whatsapp-green-light/90">
                 <MessageCircle className="mr-2" />
                 Conversar
             </Button>
