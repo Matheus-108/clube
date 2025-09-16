@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { type Model } from '@/lib/models';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Send, X, Volume2, VolumeX, Maximize } from 'lucide-react';
+import { X, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -108,7 +108,6 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
           },
         ],
         replies: [],
-        isFinalStep: false
     },
     { // Step 4: After images
         modelMessages: [
@@ -135,7 +134,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
         isFinalStep: true,
     },
   ];
-
+  
   const modelImage = PlaceHolderImages.find(img => img.id === model.avatarImageId);
   const chatFlow = getChatFlow(model.name);
 
@@ -167,7 +166,6 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     if (step.replies && step.replies.length > 0) {
       setQuickReplies(step.replies);
     } else if (!step.isFinalStep) {
-        // Automatically move to the next step if there are no replies
         const nextStepIndex = stepIndex + 1;
         if (nextStepIndex < chatFlow.length) {
             setCurrentStep(nextStepIndex);
@@ -176,21 +174,24 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   }, [chatFlow, addMessage]);
   
   useEffect(() => {
-    if (isOpen && !chatFlowHasStarted.current) {
-      chatFlowHasStarted.current = true;
-      setMessages([]);
-      setQuickReplies([]);
-      setCurrentStep(0);
-    } else if (!isOpen) {
+    if (isOpen) {
+      if (!chatFlowHasStarted.current) {
+        chatFlowHasStarted.current = true;
+        setMessages([]);
+        setQuickReplies([]);
+        setCurrentStep(0);
+        processStep(0);
+      }
+    } else {
       chatFlowHasStarted.current = false;
     }
-  }, [isOpen, model.name]);
-  
+  }, [isOpen, processStep]);
+
   useEffect(() => {
-    if (isOpen && currentStep < chatFlow.length) {
+    if (isOpen && currentStep > 0) {
       processStep(currentStep);
     }
-  }, [isOpen, currentStep, processStep]);
+  }, [currentStep, isOpen]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
