@@ -188,7 +188,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   }, [isOpen, processStep]);
 
   useEffect(() => {
-    if (isOpen && currentStep > 0) {
+    if (isOpen && currentStep > 0 && chatFlow[currentStep]) {
       processStep(currentStep);
     }
   }, [currentStep, isOpen]);
@@ -297,11 +297,8 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
             
             {chatFlow[currentStep]?.isFinalStep && (
                 <div className="mt-4 space-y-2 animate-fade-in">
-                    <Button asChild className="w-full h-12 bg-vibrant-red text-white font-bold hover:bg-red-500">
-                        <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer">Finalizar inscrição / Pagar</a>
-                    </Button>
                     <Button asChild className="w-full h-12 bg-whatsapp-green-light text-black font-bold hover:bg-whatsapp-green-light/90">
-                        <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Oi%20quero%20entrar%20no%20Clube`} target="_blank" rel="noopener noreferrer">Conversar no WhatsApp</a>
+                        <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer">Acessar Clube Agora</a>
                     </Button>
                 </div>
             )}
