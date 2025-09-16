@@ -177,4 +177,15 @@
       background-position: -200% 0;
     }
   }
+  
+  /* Image Modal for Chat */
+  .image-modal-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .image-modal-content > [data-slot='close-button'] {
+    @apply hidden;
+  }
 }
