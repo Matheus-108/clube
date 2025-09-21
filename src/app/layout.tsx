@@ -32,10 +32,25 @@ export default function RootLayout({
           <Toaster />
         </ThemeProvider>
         <Script 
+            id="xtracky-utm-handler"
             src="https://cdn.jsdelivr.net/gh/xTracky/static/utm-handler.js"
             data-token="fb353bf0-d7af-43d9-b27e-40b9e2466f15"
             data-click-id-param="click_id"
             strategy="afterInteractive"
+        />
+        <Script
+            id="kwai-pixel-script"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.kwaiPixelId = "68d086d63fa58fabc95c190f";
+                var a = document.createElement("script");
+                a.setAttribute("async", "");
+                a.setAttribute("defer", "");
+                a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-kwai.js");
+                document.head.appendChild(a);
+              `,
+            }}
         />
       </body>
     </html>
