@@ -13,24 +13,26 @@ import Image from 'next/image';
 type Message = {
   id: number;
   from: 'model' | 'user';
-  content: string | string[];
-  type: 'text' | 'image-group';
+  content: string;
+  type: 'text' | 'cta';
+  ctaLink?: string;
+  ctaText?: string;
 };
 
 type QuickReply = {
   text: string;
-  nextStep: number;
+  response: string;
+  next: any[];
 };
 
 type ChatStep = {
-  modelMessages: {
-    content: string | string[];
-    type: 'text' | 'image-group';
-    delay: number;
-    typing: number;
-  }[];
-  replies?: QuickReply[];
-  isFinalStep?: boolean;
+  model: string;
+  delay: number;
+  choices?: QuickReply[];
+  cta?: {
+    text: string;
+    link: string;
+  };
 };
 
 interface ChatModalProps {
@@ -40,103 +42,94 @@ interface ChatModalProps {
 }
 
 const CHECKOUT_URL = "https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468";
-const WHATSAPP_NUMBER = "5511999999999";
 
 export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [quickReplies, setQuickReplies] = useState<QuickReply[]>([]);
-  const [currentStep, setCurrentStep] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
-  const [isImageModalOpen, setImageModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const chatFlowHasStarted = useRef(false);
 
   const getChatFlow = (modelName: string): ChatStep[] => [
-    { // Step 0: Initial message
-      modelMessages: [
+    {
+      model: `Oi 😘 eu sou a ${modelName}, vi que você tá online agora...`,
+      delay: 1500
+    },
+    {
+      model: "Quer que eu te mostre uma prévia exclusiva só sua? 🔥",
+      choices: [
         {
-          content: `Oii amor, essas horas online? hahahahha eu sei o que você ta procurando 👀\n\nVou ser bem direta com você, tá bom?`,
-          type: 'text',
-          delay: 1200,
-          typing: 2000,
+          text: "Sim, claro 😏",
+          response: "Sim, claro 😏",
+          next: [
+            {
+              model: "Adoro quem é direto assim 😈",
+              delay: 1200
+            },
+            {
+              model: `Dentro do Clube do Sexo eu libero fotos, vídeos íntimos e a gente pode conversar muito mais em privado comigo, ${modelName} 😏`,
+              delay: 1500
+            },
+            {
+              model: "Quer liberar seu acesso agora?",
+              cta: {
+                text: "👉 Entrar no Clube Agora",
+                link: CHECKOUT_URL
+              }
+            }
+          ]
         },
-      ],
-      replies: [
-        { text: 'Sim, Continuar!', nextStep: 1 },
-        { text: 'Me conte mais', nextStep: 1 },
-      ],
-    },
-    { // Step 1: Group explanation
-      modelMessages: [
         {
-          content: `Meu amor, então você está aqui pois quer entrar no grupinho secreto das mulheres mais gostosas que moram por perto de você né? 😏`,
-          type: 'text',
-          delay: 1000,
-          typing: 2000,
+          text: "Me conta mais",
+          response: "Me conta mais",
+          next: [
+            {
+              model: `É simples: no Clube você encontra fotos secretas, vídeos quentes e pode falar comigo, ${modelName}, em privado 😏`,
+              delay: 1500
+            },
+            {
+              model: "E eu tô online agora, esperando por você...",
+              delay: 1200
+            },
+            {
+              model: "Quer liberar seu acesso agora?",
+              cta: {
+                text: "👉 Entrar no Clube Agora",
+                link: CHECKOUT_URL
+              }
+            }
+          ]
         },
-      ],
-      replies: [
-        { text: 'Sim, quero!', nextStep: 2 },
-        { text: 'Quero saber sobre esse grupo!', nextStep: 2 },
-      ],
-    },
-    { // Step 2: Image preview offer
-      modelMessages: [
         {
-          content: `Delícia... vida já vou te falar sobre o grupinho mas antes, posso te mostrar o quem lá dentro?🙈🔥`,
-          type: 'text',
-          delay: 1000,
-          typing: 1500,
-        },
-      ],
-      replies: [
-        { text: 'Sim, mostra!', nextStep: 3 },
-        { text: 'Quero só fotos sua.', nextStep: 3 },
-      ],
-    },
-    { // Step 3: Show images
-        modelMessages: [
-          {
-            content: ["https://i.imgur.com/YQA5CkO.png", "https://i.imgur.com/5P2TlJs.png"],
-            type: 'image-group',
-            delay: 800,
-            typing: 1500,
-          },
-        ],
-        replies: [],
-    },
-    { // Step 4: After images
-        modelMessages: [
-        {
-            content: `E ai amor, o que você achou? vai querer entrar? e sabe o melhor eu tô lá dentro e você pode conversar comigo direto no meu WhatsApp pessoal.`,
-            type: 'text',
-            delay: 1200,
-            typing: 2000,
-        },
-        ],
-        replies: [
-            { text: 'Quero entrar no Clube.', nextStep: 5 },
-        ],
-    },
-    { // Step 5: Final CTA
-        modelMessages: [
-        {
-            content: `Adoro quem é direto assim 😈\n\nDentro do Clube do Sexo eu libero fotos, vídeos íntimos e a gente pode conversar muito mais em privado comigo 😏`,
-            type: 'text',
-            delay: 1000,
-            typing: 1500,
-        },
-        ],
-        isFinalStep: true,
-    },
+          text: "Só fotos por enquanto",
+          response: "Só fotos por enquanto",
+          next: [
+            {
+              model: "Hmmm tímido 😌 adoro isso.",
+              delay: 1200
+            },
+            {
+              model: `Tenho um pack exclusivo só pros membros... nada de conteúdo solto por aí 👀 Quer ver o meu, ${modelName}?`,
+              delay: 1500
+            },
+            {
+              model: "Quer que eu te mostre agora?",
+              cta: {
+                text: "👉 Ver prévia exclusiva",
+                link: CHECKOUT_URL
+              }
+            }
+          ]
+        }
+      ]
+    }
   ];
-  
-  const modelImage = PlaceHolderImages.find(img => img.id === model.avatarImageId);
+
   const chatFlow = getChatFlow(model.name);
+  const modelImage = PlaceHolderImages.find(img => img.id === model.avatarImageId);
 
   const addMessage = useCallback((message: Omit<Message, 'id'>) => {
     setMessages(prev => [...prev, { ...message, id: prev.length }]);
@@ -145,95 +138,60 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     }
   }, [isMuted]);
 
-  const processStep = useCallback(async (stepIndex: number) => {
-    const step = chatFlow[stepIndex];
-    if (!step) return;
-
-    for (const msg of step.modelMessages) {
+  const sendModelMessages = useCallback(async (steps: ChatStep[]) => {
+    for (const step of steps) {
       setIsTyping(true);
-      await new Promise(resolve => setTimeout(resolve, msg.typing));
+      await new Promise(resolve => setTimeout(resolve, step.delay));
       setIsTyping(false);
-      
-      addMessage({
-        from: 'model',
-        content: msg.content,
-        type: msg.type
-      });
 
-      await new Promise(resolve => setTimeout(resolve, msg.delay));
-    }
-
-    if (step.replies && step.replies.length > 0) {
-      setQuickReplies(step.replies);
-    } else if (!step.isFinalStep) {
-        const nextStepIndex = stepIndex + 1;
-        if (nextStepIndex < chatFlow.length) {
-            setCurrentStep(nextStepIndex);
-        }
-    }
-  }, [chatFlow, addMessage]);
-  
-  useEffect(() => {
-    if (isOpen) {
-      if (!chatFlowHasStarted.current) {
-        chatFlowHasStarted.current = true;
-        setMessages([]);
-        setQuickReplies([]);
-        setCurrentStep(0);
-        processStep(0);
+      if (step.model) {
+        addMessage({
+          from: 'model',
+          content: step.model,
+          type: step.cta ? 'cta' : 'text',
+          ctaText: step.cta?.text,
+          ctaLink: step.cta?.link,
+        });
       }
-    } else {
+
+      if (step.choices) {
+        setQuickReplies(step.choices);
+      }
+    }
+  }, [addMessage]);
+
+  const startChat = useCallback(() => {
+    chatFlowHasStarted.current = true;
+    setMessages([]);
+    setQuickReplies([]);
+    sendModelMessages(chatFlow);
+  }, [sendModelMessages, chatFlow]);
+
+  useEffect(() => {
+    if (isOpen && !chatFlowHasStarted.current) {
+      startChat();
+    } else if (!isOpen) {
       chatFlowHasStarted.current = false;
     }
-  }, [isOpen, processStep]);
-
-  useEffect(() => {
-    if (isOpen && currentStep > 0 && chatFlow[currentStep]) {
-      processStep(currentStep);
-    }
-  }, [currentStep, isOpen]);
+  }, [isOpen, startChat]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const handleQuickReply = (reply: QuickReply) => {
-    addMessage({ from: 'user', content: reply.text, type: 'text' });
+  const handleOptionSelect = (option: QuickReply) => {
+    addMessage({ from: 'user', content: option.response, type: 'text' });
     setQuickReplies([]);
-    setCurrentStep(reply.nextStep);
+    sendModelMessages(option.next);
+  };
+
+  const handleCheckoutClick = (link: string) => {
+    if (window.xTracky) {
+      window.xTracky.track('KWAI_PURCHASE_INTENT');
+    }
+    window.location.href = link;
   };
   
-  const handleOpenImage = (url: string) => {
-    setSelectedImage(url);
-    setImageModalOpen(true);
-  }
-
-  const renderMessageContent = (message: Message) => {
-    if (message.type === 'image-group' && Array.isArray(message.content)) {
-        return (
-            <div className="flex flex-col gap-1">
-            {message.content.map((url, index) => (
-                <div key={index} className="relative cursor-pointer group" onClick={() => handleOpenImage(url)}>
-                    <Image
-                        src={url}
-                        alt={`Preview image ${index + 1}`}
-                        width={250}
-                        height={250}
-                        className="rounded-lg object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Maximize className="text-white" size={32} />
-                    </div>
-                    <div className="absolute bottom-1 right-1 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded-full">
-                        {index + 1} de {message.content.length}
-                    </div>
-                </div>
-            ))}
-            </div>
-        );
-    }
-    return <p className="text-sm text-gray-800" style={{ whiteSpace: 'pre-wrap' }}>{message.content}</p>;
-  }
 
   return (
     <>
@@ -260,25 +218,37 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
             <div className="flex-1 space-y-3">
               {messages.map((message, index) => (
                 <Fragment key={message.id}>
-                  {index === 0 && (
-                    <div className="text-center my-2">
-                      <span className="bg-[#E1F2FB] text-gray-600 text-xs rounded-md px-2 py-1">HOJE</span>
-                    </div>
-                  )}
-                  <div className={cn('flex items-end gap-2 animate-slide-in', message.from === 'user' ? 'justify-end' : 'justify-start')}>
-                    {message.from === 'model' && <div className="w-6"></div>}
-                    <div className={cn(
-                      'max-w-[85%] rounded-lg px-3 py-2 shadow-sm',
-                      message.from === 'user' ? 'bg-white' : 'bg-whatsapp-message-out'
-                    )}>
-                      {renderMessageContent(message)}
-                       {message.id === messages.length - 1 && currentStep === 4 && (
-                            <p className="text-xs text-gray-500 mt-2">
-                                Contato via WhatsApp é para conversas digitais. Não garantimos ou oferecemos encontros presenciais.
-                            </p>
+                    {index === 0 && (
+                         <div className="text-center my-2">
+                            <span className="bg-[#E1F2FB] text-gray-600 text-xs rounded-md px-2 py-1">HOJE</span>
+                        </div>
+                    )}
+                    <div
+                        className={cn(
+                            'flex items-end gap-2 animate-slide-in',
+                            message.from === 'user' ? 'justify-end' : 'justify-start'
                         )}
+                    >
+                        {message.from === 'model' && (<div className="w-6"></div>)}
+                        <div
+                            className={cn(
+                            'max-w-[80%] rounded-lg px-3 py-2 shadow-sm',
+                            message.from === 'user'
+                                ? 'bg-white'
+                                : 'bg-whatsapp-message-out'
+                            )}
+                        >
+                            <p className="text-sm text-gray-800" style={{whiteSpace: 'pre-wrap'}}>{message.content}</p>
+                            {message.type === 'cta' && message.ctaLink && (
+                              <Button 
+                                  onClick={() => handleCheckoutClick(message.ctaLink!)}
+                                  size="sm" 
+                                  className="mt-2 w-full bg-vibrant-red text-white font-bold hover:bg-red-500">
+                                  {message.ctaText || 'Acessar'}
+                              </Button>
+                            )}
+                        </div>
                     </div>
-                  </div>
                 </Fragment>
               ))}
               {isTyping && (
@@ -295,21 +265,12 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
               <div ref={messagesEndRef} />
             </div>
             
-            {chatFlow[currentStep]?.isFinalStep && (
-                <div className="mt-4 space-y-2 animate-fade-in">
-                    <Button asChild className="w-full h-12 bg-whatsapp-green-light text-black font-bold hover:bg-whatsapp-green-light/90">
-                        <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer">Acessar Clube Agora</a>
-                    </Button>
-                </div>
-            )}
-
-
             {quickReplies.length > 0 && !isTyping && (
               <div className="mt-4 space-y-2 animate-fade-in">
                 {quickReplies.map((reply, index) => (
                   <button
                     key={index}
-                    onClick={() => handleQuickReply(reply)}
+                    onClick={() => handleOptionSelect(reply)}
                     className="w-full text-left bg-white rounded-full p-3 shadow-sm flex items-center hover:bg-gray-100 transition-colors"
                   >
                     <span className="flex-1 text-primary text-sm font-medium text-center">{reply.text}</span>
@@ -327,17 +288,6 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
           <audio ref={audioRef} src="/notification.mp3" preload="auto" />
         </DialogContent>
       </Dialog>
-      
-      {isImageModalOpen && selectedImage && (
-        <Dialog open={isImageModalOpen} onOpenChange={setImageModalOpen}>
-            <DialogContent className="image-modal-content p-0 m-0 bg-transparent border-none w-auto h-auto max-w-[90vw] max-h-[90vh]">
-                <Image src={selectedImage} alt="Preview" layout="responsive" width={800} height={800} className="rounded-lg object-contain" />
-                 <button onClick={() => setImageModalOpen(false)} className="absolute -top-2 -right-2 text-white bg-black/50 rounded-full p-1">
-                    <X size={20} />
-                </button>
-            </DialogContent>
-        </Dialog>
-      )}
     </>
   );
 }

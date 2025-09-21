@@ -9,7 +9,6 @@ import InteractivePopup from '@/components/interactive-popup';
 import SearchLoadingModal from '@/components/search-loading-modal';
 import { Button } from '@/components/ui/button';
 import { models, type Model } from '@/lib/models';
-import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Loader2, Search, MapPin, Users, Zap, Sparkles, MessageSquare, Circle, Flame } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -39,6 +38,7 @@ export default function Home() {
   const [newModelsCount, setNewModelsCount] = useState(0);
   const [onlineGirlsCount, setOnlineGirlsCount] = useState(94);
   const [newTodayCount, setNewTodayCount] = useState(12);
+  const checkoutLink = "https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468";
 
   useEffect(() => {
     setIsMounted(true);
@@ -86,6 +86,13 @@ export default function Home() {
       setIsSearchLoading(false);
       setSearchPerformed(true);
     }, totalLoadingTime);
+  };
+  
+  const handleCheckoutClick = () => {
+    if (window.xTracky) {
+      window.xTracky.track('KWAI_PURCHASE_INTENT');
+    }
+    window.location.href = checkoutLink;
   };
 
   if (!isMounted) {
@@ -191,11 +198,11 @@ export default function Home() {
 
               <div className="text-center mt-8">
                 <Button
-                  asChild
+                  onClick={handleCheckoutClick}
                   size="lg"
                   className="bg-accent text-accent-foreground hover:bg-accent/90 text-xl font-bold shadow-lg py-7 px-10"
                 >
-                  <Link href="https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468">Ver modelos de {city} agora 🔥</Link>
+                  Ver modelos de {city} agora 🔥
                 </Button>
               </div>
             </div>
