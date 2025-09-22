@@ -20,6 +20,16 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+        <script>
+          {`
+            window.kwaiPixelId = "68d18cd573204d1af25752a6";
+            var a = document.createElement("script");
+            a.setAttribute("async", "");
+            a.setAttribute("defer", "");
+            a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-kwai.js");
+            document.head.appendChild(a);
+          `}
+        </script>
       </head>
       <body className="font-body antialiased">
         <ThemeProvider
@@ -31,13 +41,6 @@ export default function RootLayout({
           {children}
           <Toaster />
         </ThemeProvider>
-        <Script 
-            id="xtracky-utm-handler"
-            src="https://cdn.jsdelivr.net/gh/xTracky/static/utm-handler.js"
-            data-token="fb353bf0-d7af-43d9-b27e-40b9e2466f15"
-            data-click-id-param="click_id"
-            strategy="afterInteractive"
-        />
       </body>
     </html>
   );
