@@ -141,7 +141,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   const sendModelMessages = useCallback(async (steps: ChatStep[]) => {
     for (const step of steps) {
       setIsTyping(true);
-      await new Promise(resolve => setTimeout(resolve, step.delay));
+      await new Promise(resolve => setTimeout(resolve, step.delay || 1000));
       setIsTyping(false);
 
       if (step.model) {
@@ -186,9 +186,6 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   };
 
   const handleCheckoutClick = (link: string) => {
-    if (window.xTracky) {
-      window.xTracky.track('KWAI_PURCHASE_INTENT');
-    }
     window.location.href = link;
   };
   

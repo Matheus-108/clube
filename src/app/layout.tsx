@@ -38,20 +38,6 @@ export default function RootLayout({
             data-click-id-param="click_id"
             strategy="afterInteractive"
         />
-        <Script
-            id="kwai-pixel-script"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.kwaiPixelId = "68d086d63fa58fabc95c190f";
-                var a = document.createElement("script");
-                a.setAttribute("async", "");
-                a.setAttribute("defer", "");
-                a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-kwai.js");
-                document.head.appendChild(a);
-              `,
-            }}
-        />
       </body>
     </html>
   );

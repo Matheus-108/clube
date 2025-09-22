@@ -8,9 +8,6 @@ export default function Header() {
   const checkoutLink = "https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468";
 
   const handleCheckoutClick = () => {
-    if (window.xTracky) {
-      window.xTracky.track('KWAI_PURCHASE_INTENT');
-    }
     window.location.href = checkoutLink;
   };
   

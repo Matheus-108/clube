@@ -89,9 +89,6 @@ export default function Home() {
   };
   
   const handleCheckoutClick = () => {
-    if (window.xTracky) {
-      window.xTracky.track('KWAI_PURCHASE_INTENT');
-    }
     window.location.href = checkoutLink;
   };
 
@@ -108,13 +105,13 @@ export default function Home() {
             <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl font-body text-white">
               Clube do Sexo
             </h1>
-            <p className="mt-6 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
+            <p className="mt-8 text-lg md:text-xl max-w-2xl mx-auto text-white/80">
               Entre no Clube do Sexo — encontros, vídeos e chamadas privadas num só lugar.
             </p>
           </div>
 
           {/* Stats Section */}
-          <div className="flex justify-center items-center flex-wrap gap-x-8 gap-y-2 sm:gap-x-12 my-8 text-sm sm:text-base">
+          <div className="flex justify-center items-center flex-wrap gap-x-8 sm:gap-x-12 my-8 text-sm sm:text-base">
                 <div className="flex items-center gap-2">
                     <Circle className="w-3 h-3 text-green-500 fill-green-500" />
                     <span className="font-bold text-green-400">{onlineGirlsCount} Garotas Online</span>
