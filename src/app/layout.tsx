@@ -22,7 +22,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
         <script>
           {`
-            window.kwaiPixelId = "68d18cd573204d1af25752a6";
+            window.kwaiPixelId = "68d950c2efa723954c3ec30d";
             var a = document.createElement("script");
             a.setAttribute("async", "");
             a.setAttribute("defer", "");
