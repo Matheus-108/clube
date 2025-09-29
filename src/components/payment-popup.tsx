@@ -55,7 +55,11 @@ export default function PaymentPopup({ isOpen, onClose, model }: PaymentPopupPro
                     <AvatarFallback>{model.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <h2 className="text-2xl font-bold text-fuchsia-300">Falta pouco para desbloquear...</h2>
-                <p className="text-gray-400 mt-1 text-sm">Confirme o PIX de R${PRICE} para ter acesso à {model.name} e ao Clube.</p>
+                <p className="text-gray-400 mt-2 text-lg">
+                    <span className="line-through text-gray-500">De R$57,00</span>
+                    <span className="font-bold text-white"> por apenas R${PRICE}</span>
+                </p>
+                <p className="text-gray-400 mt-1 text-sm">Confirme o PIX para ter acesso à {model.name} e ao Clube.</p>
             </div>
             
             <div className="p-4 rounded-lg bg-fuchsia-900/20 border border-fuchsia-700/50 mb-6">
