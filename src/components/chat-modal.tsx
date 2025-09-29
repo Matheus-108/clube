@@ -6,9 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { type Model } from '@/lib/models';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { X, Volume2, VolumeX, Maximize } from 'lucide-react';
+import { X, Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 import PaymentPopup from './payment-popup';
 
 type Message = {
@@ -178,7 +177,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
       }
       timer = setTimeout(() => {
         setPaymentPopupOpen(true);
-      }, 3000); // 3 seconds
+      }, 1000); // 1 second
     } else {
         chatFlowHasStarted.current = false;
         setPaymentPopupOpen(false);
@@ -297,7 +296,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
           <PaymentPopup 
             isOpen={isPaymentPopupOpen} 
             onClose={() => setPaymentPopupOpen(false)} 
-            modelName={model.name} 
+            model={model} 
           />
         </DialogContent>
       </Dialog>
