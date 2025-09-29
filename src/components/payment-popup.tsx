@@ -14,9 +14,10 @@ interface PaymentPopupProps {
 
 const PIX_KEY = 'suportepro29@gmail.com';
 const PRICE = '17,00';
+const CHECKOUT_URL = "https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468";
+
 
 export default function PaymentPopup({ isOpen, onClose, modelName }: PaymentPopupProps) {
-  const [pixCode, setPixCode] = useState('');
   const [isCopied, setIsCopied] = useState(false);
   const { toast } = useToast();
 
@@ -29,22 +30,11 @@ export default function PaymentPopup({ isOpen, onClose, modelName }: PaymentPopu
     });
     setTimeout(() => setIsCopied(false), 2000);
   };
-
-  const handleConfirmPayment = () => {
-    if (!pixCode) {
-        toast({
-            variant: "destructive",
-            title: "Código de confirmação inválido",
-            description: "Por favor, cole o código PIX para confirmar.",
-        });
-        return;
-    }
-     toast({
-        title: "Pagamento confirmado!",
-        description: "Redirecionando para o conteúdo exclusivo...",
-    });
-    onClose();
+  
+  const handleAccessClick = () => {
+    window.location.href = CHECKOUT_URL;
   };
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -96,21 +86,9 @@ export default function PaymentPopup({ isOpen, onClose, modelName }: PaymentPopu
                 </div>
             </div>
 
-            <div className="mt-4">
-                <label className="text-sm font-semibold text-fuchsia-300">Código de confirmação do PIX:</label>
-                <input 
-                    type="text"
-                    value={pixCode}
-                    onChange={(e) => setPixCode(e.target.value)}
-                    placeholder="Cole aqui o código do seu PIX..."
-                    className="w-full mt-1 bg-black/50 border border-gray-600 rounded-md p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-500 outline-none transition"
-                />
-                <p className="text-xs text-gray-500 mt-1">*Digite qualquer código após fazer o PIX</p>
-            </div>
-
-            <Button onClick={handleConfirmPayment} className="w-full mt-6 py-6 text-lg font-bold payment-button-gradient rounded-lg">
+            <Button onClick={handleAccessClick} className="w-full mt-8 py-6 text-lg font-bold payment-button-gradient rounded-lg">
                 <Sparkles className="mr-2" size={20}/>
-                Confirmar Pagamento - R$ {PRICE}
+                Acessar Clube Agora - R$ {PRICE}
             </Button>
             
             <p className="text-center text-xs text-gray-500 mt-4">

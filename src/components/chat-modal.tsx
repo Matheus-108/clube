@@ -178,7 +178,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
       }
       timer = setTimeout(() => {
         setPaymentPopupOpen(true);
-      }, 5000); // 5 seconds
+      }, 3000); // 3 seconds
     } else {
         chatFlowHasStarted.current = false;
         setPaymentPopupOpen(false);
