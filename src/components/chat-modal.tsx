@@ -9,6 +9,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { X, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import PaymentPopup from './payment-popup';
 
 type Message = {
   id: number;
@@ -48,6 +49,8 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   const [isTyping, setIsTyping] = useState(false);
   const [quickReplies, setQuickReplies] = useState<QuickReply[]>([]);
   const [isMuted, setIsMuted] = useState(false);
+  const [isPaymentPopupOpen, setPaymentPopupOpen] = useState(false);
+
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -168,11 +171,19 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   }, [sendModelMessages, chatFlow]);
 
   useEffect(() => {
-    if (isOpen && !chatFlowHasStarted.current) {
-      startChat();
-    } else if (!isOpen) {
-      chatFlowHasStarted.current = false;
+    let timer: NodeJS.Timeout;
+    if (isOpen) {
+      if (!chatFlowHasStarted.current) {
+        startChat();
+      }
+      timer = setTimeout(() => {
+        setPaymentPopupOpen(true);
+      }, 5000); // 5 seconds
+    } else {
+        chatFlowHasStarted.current = false;
+        setPaymentPopupOpen(false);
     }
+    return () => clearTimeout(timer);
   }, [isOpen, startChat]);
 
   useEffect(() => {
@@ -283,6 +294,11 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
             </p>
           </footer>
           <audio ref={audioRef} src="/notification.mp3" preload="auto" />
+          <PaymentPopup 
+            isOpen={isPaymentPopupOpen} 
+            onClose={() => setPaymentPopupOpen(false)} 
+            modelName={model.name} 
+          />
         </DialogContent>
       </Dialog>
     </>
