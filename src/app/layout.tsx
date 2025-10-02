@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
-import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Clube HOT All Access',
@@ -20,16 +19,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
-        <Script src="https://app.pushinpay.com.br/checkout.js" strategy="afterInteractive" />
-        <script
-          id="kwai-pixel-script"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.kwaiPixelId = "68d950c2efa723954c3ec30d";
-              !function(e){if(!window.kwaiPixel){window.kwaiPixel=function(){window.kwaiPixel.queue.push(arguments)};window.kwaiPixel.queue=window.kwaiPixel.queue||[];var i=document.createElement("script");i.async=!0,i.src="https://cdn.utmify.com.br/scripts/pixel/pixel-kwai.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(i,n)}}(window);
-            `,
-          }}
-        />
       </head>
       <body className="font-body antialiased">
         <ThemeProvider
