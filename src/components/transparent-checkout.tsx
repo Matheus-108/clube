@@ -19,9 +19,7 @@ const benefits = [
 
 declare global {
   interface Window {
-    PushinPay: {
-      open: (options: { checkoutId: string; email: string }) => void;
-    };
+    pp: (action: string, options: { checkoutId: string; email: string }) => void;
   }
 }
 
@@ -36,8 +34,8 @@ export default function TransparentCheckout() {
             return;
         }
 
-        if (window.PushinPay) {
-          window.PushinPay.open({
+        if (window.pp) {
+          window.pp('open', {
             checkoutId: checkoutId,
             email: email,
           });
