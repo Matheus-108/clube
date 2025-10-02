@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect, ReactElement } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { MapPin, Users, Sparkles, Gem, CheckCircle, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -62,6 +62,10 @@ export default function SearchLoadingModal({ isOpen, city }: SearchLoadingModalP
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent className="bg-gradient-to-b from-black to-[#1c1c1c] text-white border-white/10 shadow-2xl rounded-2xl w-[90vw] max-w-md p-8 flex flex-col items-center justify-center gap-6">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Buscando modelos</DialogTitle>
+          <DialogDescription>Aguarde enquanto buscamos os melhores perfis para você em {city}.</DialogDescription>
+        </DialogHeader>
         <Loader2 className="w-12 h-12 text-vibrant-red animate-spin" />
         
         <div className="text-center space-y-4 w-full">

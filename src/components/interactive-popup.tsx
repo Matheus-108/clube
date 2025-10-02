@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { X, Volume2, VolumeX } from 'lucide-react';
 import FloatingBubble from './floating-bubble';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface InteractivePopupProps {
   onOpenChat: (model: Model) => void;
@@ -83,8 +84,12 @@ export default function InteractivePopup({ onOpenChat }: InteractivePopupProps) 
   return (
     <>
       <audio ref={audioRef} src="/notification.mp3" preload="auto"></audio>
-      <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-sm rounded-lg bg-gradient-to-b from-[#B8001F] to-black text-white overflow-hidden shadow-2xl animate-bounce-in">
+      <Dialog open={isVisible} onOpenChange={setIsVisible}>
+        <DialogContent className="w-full max-w-sm rounded-lg bg-gradient-to-b from-[#B8001F] to-black text-white overflow-hidden shadow-2xl animate-bounce-in p-0 border-0">
+          <DialogHeader className="sr-only">
+            <DialogTitle>{selectedModel.name} te cutucou</DialogTitle>
+            <DialogDescription>Ela quer conversar com você e mandar uma prévia exclusiva agora.</DialogDescription>
+          </DialogHeader>
           <div className="p-8 text-center">
             <Avatar className="w-24 h-24 mx-auto mb-4 border-4 border-white shadow-lg">
               {modelImage && <AvatarImage src={modelImage.imageUrl} alt={selectedModel.name} data-ai-hint={modelImage.imageHint}/>}
@@ -130,8 +135,8 @@ export default function InteractivePopup({ onOpenChat }: InteractivePopupProps) 
           >
             {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </button>
-        </div>
-      </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

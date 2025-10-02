@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, Fragment, useCallback } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { type Model } from '@/lib/models';
@@ -200,6 +200,10 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     <>
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
         <DialogContent className="whatsapp-modal p-0 gap-0">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Chat com {model.name}</DialogTitle>
+            <DialogDescription>Uma conversa simulada com a modelo {model.name}.</DialogDescription>
+          </DialogHeader>
           <header className="bg-whatsapp-green-dark p-3 flex items-center gap-3 shadow-md z-10">
             <Avatar>
               {modelImage && <AvatarImage src={modelImage.imageUrl} alt={model.name} data-ai-hint={modelImage.imageHint} />}
@@ -298,6 +302,10 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
       {/* Image viewer modal */}
       <Dialog open={!!selectedImage} onOpenChange={(isOpen) => !isOpen && setSelectedImage(null)}>
         <DialogContent className="p-0 border-0 bg-transparent shadow-none max-w-2xl image-modal-content">
+            <DialogHeader className="sr-only">
+              <DialogTitle>Visualização de Imagem</DialogTitle>
+              <DialogDescription>Imagem do chat em tela cheia.</DialogDescription>
+            </DialogHeader>
             {selectedImage && (
                 <div className="relative w-full h-auto">
                     <Image src={selectedImage} alt="Visualização de imagem" width={800} height={800} className="rounded-lg object-contain" unoptimized={selectedImage.endsWith('.gif')} />
