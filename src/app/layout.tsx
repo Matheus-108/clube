@@ -25,11 +25,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               window.kwaiPixelId = "68d950c2efa723954c3ec30d";
-              var a = document.createElement("script");
-              a.setAttribute("async", "");
-              a.setAttribute("defer", "");
-              a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-kwai.js");
-              document.head.appendChild(a);
+              !function(e){if(!window.kwaiPixel){window.kwaiPixel=function(){window.kwaiPixel.queue.push(arguments)};window.kwaiPixel.queue=window.kwaiPixel.queue||[];var i=document.createElement("script");i.async=!0,i.src="https://cdn.utmify.com.br/scripts/pixel/pixel-kwai.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(i,n)}}(window);
             `,
           }}
         />
