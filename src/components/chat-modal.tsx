@@ -9,6 +9,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { X, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import PaymentPopup from './payment-popup';
+import Image from 'next/image';
 
 type Message = {
   id: number;
@@ -306,11 +307,11 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
             </p>
           </footer>
           <audio ref={audioRef} src="/notification.mp3" preload="auto" />
-          <PaymentPopup 
+          {isPaymentPopupOpen && <PaymentPopup 
             isOpen={isPaymentPopupOpen} 
             onClose={() => setPaymentPopupOpen(false)} 
             model={model} 
-          />
+          />}
         </DialogContent>
       </Dialog>
       
@@ -334,3 +335,5 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     </>
   );
 }
+
+    
