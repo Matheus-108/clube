@@ -14,6 +14,7 @@ import { Loader2, Search, MapPin, Users, Zap, Sparkles, MessageSquare, Circle, F
 import { Card, CardContent } from '@/components/ui/card';
 import GifPreview from '@/components/gif-preview';
 import Image from 'next/image';
+import TransparentCheckout from '@/components/transparent-checkout';
 
 const shuffleArray = <T,>(array: T[]): T[] => {
   let currentIndex = array.length, randomIndex;
@@ -202,6 +203,9 @@ export default function Home() {
                   Ver modelos de {city} agora 🔥
                 </Button>
               </div>
+
+              <TransparentCheckout />
+
             </div>
           )}
         </main>
