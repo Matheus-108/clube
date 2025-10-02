@@ -20,14 +20,14 @@ const benefits = [
 
 export default function TransparentCheckout() {
     const [email, setEmail] = useState('');
-    const checkoutBaseUrl = "https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468";
+    const checkoutId = "6392cb5a-74af-4e15-b794-d194dadad468";
 
     const handleCheckout = () => {
         if (!email) {
             alert('Por favor, insira seu melhor e-mail.');
             return;
         }
-        const checkoutUrl = `${checkoutBaseUrl}?email=${encodeURIComponent(email)}`;
+        const checkoutUrl = `https://pay.nitropay.com.br/checkout/${checkoutId}?email=${encodeURIComponent(email)}`;
         window.location.href = checkoutUrl;
     };
 
