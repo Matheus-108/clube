@@ -20,6 +20,7 @@ const benefits = [
 
 export default function TransparentCheckout() {
     const [email, setEmail] = useState('');
+    // Este é o ID do seu produto/checkout na PushinPay.
     const checkoutId = "6392cb5a-74af-4e15-b794-d194dadad468";
 
     const handleCheckout = () => {
@@ -27,7 +28,8 @@ export default function TransparentCheckout() {
             alert('Por favor, insira seu melhor e-mail.');
             return;
         }
-        const checkoutUrl = `https://pay.nitropay.com.br/checkout/${checkoutId}?email=${encodeURIComponent(email)}`;
+        // Monta a URL correta para a PushinPay.
+        const checkoutUrl = `https://app.pushinpay.com.br/checkout/${checkoutId}?email=${encodeURIComponent(email)}`;
         window.location.href = checkoutUrl;
     };
 
