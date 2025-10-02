@@ -20,6 +20,23 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(p, u, s, h, i, n, g) {
+                p.PushinPay = i;
+                p[i] = p[i] || function() {
+                  (p[i].q = p[i].q || []).push(arguments)
+                };
+                n = u.createElement(s);
+                g = u.getElementsByTagName(s)[0];
+                n.async = 1;
+                n.src = h;
+                g.parentNode.insertBefore(n, g)
+              })(window, document, 'script', 'https://app.pushinpay.com.br/checkout.js', 'pp');
+            `,
+          }}
+        />
         <script>
           {`
             window.kwaiPixelId = "68d950c2efa723954c3ec30d";

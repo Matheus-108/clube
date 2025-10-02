@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Lock, Flame, Heart, MessageCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Lock, Heart, Flame, MessageCircle } from 'lucide-react';
 import {
   HeartFilledIcon,
   ChatBubbleIcon,
@@ -18,6 +17,14 @@ const benefits = [
     { text: 'Conteúdo personalizado', icon: <Heart className="h-5 w-5 text-emerald-400" /> }
 ];
 
+declare global {
+  interface Window {
+    PushinPay: {
+      open: (options: { checkoutId: string; email: string }) => void;
+    };
+  }
+}
+
 export default function TransparentCheckout() {
     const [email, setEmail] = useState('');
     // Este é o ID do seu produto/checkout na PushinPay.
@@ -28,9 +35,15 @@ export default function TransparentCheckout() {
             alert('Por favor, insira seu melhor e-mail.');
             return;
         }
-        // Monta a URL correta para a PushinPay.
-        const checkoutUrl = `https://app.pushinpay.com.br/checkout/${checkoutId}?email=${encodeURIComponent(email)}`;
-        window.location.href = checkoutUrl;
+
+        if (window.PushinPay) {
+          window.PushinPay.open({
+            checkoutId: checkoutId,
+            email: email,
+          });
+        } else {
+          alert('Ocorreu um erro ao carregar o checkout. Tente novamente em instantes.');
+        }
     };
 
     return (
