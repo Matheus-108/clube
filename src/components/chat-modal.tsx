@@ -46,8 +46,6 @@ interface ChatModalProps {
   model: Model;
 }
 
-const CHECKOUT_URL = "https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468";
-
 export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -95,10 +93,6 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     {
         model: "Quer liberar seu acesso agora?",
         delay: 1500,
-        cta: {
-            text: "👉 Sim, quero meu acesso!",
-            link: CHECKOUT_URL,
-        }
     }
   ];
 
@@ -200,10 +194,6 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     setQuickReplies([]);
     sendModelMessages(option.next);
   };
-
-  const handleCheckoutClick = (link: string) => {
-    window.location.href = link;
-  };
   
 
   return (
@@ -263,14 +253,6 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
                                  </button>
                             )}
 
-                            {message.type === 'cta' && message.ctaLink && (
-                              <Button 
-                                  onClick={() => handleCheckoutClick(message.ctaLink!)}
-                                  size="sm" 
-                                  className="mt-2 w-full bg-vibrant-red text-white font-bold hover:bg-red-500">
-                                  {message.ctaText || 'Acessar'}
-                              </Button>
-                            )}
                         </div>
                     </div>
                 </Fragment>

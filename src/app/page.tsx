@@ -39,7 +39,6 @@ export default function Home() {
   const [newModelsCount, setNewModelsCount] = useState(0);
   const [onlineGirlsCount, setOnlineGirlsCount] = useState(94);
   const [newTodayCount, setNewTodayCount] = useState(12);
-  const checkoutLink = "https://pay.nitropaycheckout.com.br/checkout/6392cb5a-74af-4e15-b794-d194dadad468";
 
   useEffect(() => {
     setIsMounted(true);
@@ -89,10 +88,6 @@ export default function Home() {
     }, totalLoadingTime);
   };
   
-  const handleCheckoutClick = () => {
-    window.location.href = checkoutLink;
-  };
-
   if (!isMounted) {
     return null; // or a loading spinner
   }
@@ -193,16 +188,6 @@ export default function Home() {
                       {newModelsCount} nova{newModelsCount > 1 ? 's' : ''} {newModelsCount > 1 ? 'modelos' : 'modelo'} entraram nos últimos minutos em {city}
                   </p>
               </Card>
-
-              <div className="text-center mt-8">
-                <Button
-                  onClick={handleCheckoutClick}
-                  size="lg"
-                  className="bg-accent text-accent-foreground hover:bg-accent/90 text-xl font-bold shadow-lg py-7 px-10"
-                >
-                  Ver modelos de {city} agora 🔥
-                </Button>
-              </div>
 
               <TransparentCheckout />
 
