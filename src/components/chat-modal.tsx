@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { type Model } from '@/lib/models';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { X, Volume2, VolumeX, Maximize } from 'lucide-react';
+import { X, Volume2, VolumeX, Maximize, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -14,9 +14,11 @@ type Message = {
   id: number;
   from: 'model' | 'user';
   content: string;
-  type: 'text' | 'cta';
+  type: 'text' | 'cta' | 'image';
   ctaLink?: string;
   ctaText?: string;
+  imageUrl?: string;
+  imageHint?: string;
 };
 
 type QuickReply = {
@@ -26,13 +28,16 @@ type QuickReply = {
 };
 
 type ChatStep = {
-  model: string;
+  model?: string;
   delay: number;
   choices?: QuickReply[];
   cta?: {
     text: string;
     link: string;
   };
+  image?: {
+      id: string;
+  }
 };
 
 interface ChatModalProps {
@@ -48,81 +53,77 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   const [isTyping, setIsTyping] = useState(false);
   const [quickReplies, setQuickReplies] = useState<QuickReply[]>([]);
   const [isMuted, setIsMuted] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const chatFlowHasStarted = useRef(false);
+  
+  const conversationContinuation = (modelName: string): ChatStep[] => [
+    {
+        model: `Vou te explicar como funciona o CLUBE, é novidade tá, chegou agora na sua cidade, É simples: no Clube você encontra fotos secretas, vídeos quentes e pode falar comigo, ${modelName}, em privado, podemos até marcar um presencial rs 😏`,
+        delay: 1500
+    },
+    {
+        model: "E eu tô online agora, esperando por você, olha só como já to...",
+        delay: 1200
+    },
+    {
+        image: { id: "chat-gif-1" },
+        delay: 1000,
+    },
+    {
+        model: "Agora me diz se vale a pena conhecer nosso CLUBE hahahah olha o que o pessoal la dentro ta marcando já 😏",
+        delay: 1500,
+    },
+    {
+        image: { id: "chat-img-1" },
+        delay: 500,
+    },
+    {
+        image: { id: "chat-img-2" },
+        delay: 1000,
+    },
+    {
+        model: "E amor, assim que as meninas te adicionarem no grupinho, eu vou te chamar pessoalmente no privado pra te mandar um presentinho de Boas-Vindas🤭🔥 Já to molhada aqui",
+        delay: 2000,
+    },
+    {
+        image: { id: "chat-img-3" },
+        delay: 1000,
+    },
+    {
+        model: "Quer liberar seu acesso agora?",
+        delay: 500,
+        cta: {
+            text: "👉 Sim, quero meu acesso!",
+            link: CHECKOUT_URL,
+        }
+    }
+  ];
 
   const getChatFlow = (modelName: string): ChatStep[] => [
     {
-      model: `Oi 😘 eu sou a ${modelName}, vi que você tá online agora...`,
+      model: `Oi amor 😘 eu sou a ${modelName}, acabei de entrar e vou ficar online até daqui a pouco...`,
       delay: 1500
     },
     {
-      model: "Quer que eu te mostre uma prévia exclusiva só sua? 🔥",
+      model: "E eu sei porque esta aqui 🔥 posso te enviar uma previa minha?",
       choices: [
         {
           text: "Sim, claro 😏",
           response: "Sim, claro 😏",
-          next: [
-            {
-              model: "Adoro quem é direto assim 😈",
-              delay: 1200
-            },
-            {
-              model: `Dentro do Clube do Sexo eu libero fotos, vídeos íntimos e a gente pode conversar muito mais em privado comigo, ${modelName} 😏`,
-              delay: 1500
-            },
-            {
-              model: "Quer liberar seu acesso agora?",
-              cta: {
-                text: "👉 Entrar no Clube Agora",
-                link: CHECKOUT_URL
-              }
-            }
-          ]
+          next: conversationContinuation(modelName)
         },
         {
           text: "Me conta mais",
           response: "Me conta mais",
-          next: [
-            {
-              model: `É simples: no Clube você encontra fotos secretas, vídeos quentes e pode falar comigo, ${modelName}, em privado 😏`,
-              delay: 1500
-            },
-            {
-              model: "E eu tô online agora, esperando por você...",
-              delay: 1200
-            },
-            {
-              model: "Quer liberar seu acesso agora?",
-              cta: {
-                text: "👉 Entrar no Clube Agora",
-                link: CHECKOUT_URL
-              }
-            }
-          ]
+          next: conversationContinuation(modelName)
         },
         {
           text: "Só fotos por enquanto",
           response: "Só fotos por enquanto",
-          next: [
-            {
-              model: "Hmmm tímido 😌 adoro isso.",
-              delay: 1200
-            },
-            {
-              model: `Tenho um pack exclusivo só pros membros... nada de conteúdo solto por aí 👀 Quer ver o meu, ${modelName}?`,
-              delay: 1500
-            },
-            {
-              model: "Quer que eu te mostre agora?",
-              cta: {
-                text: "👉 Ver prévia exclusiva",
-                link: CHECKOUT_URL
-              }
-            }
-          ]
+          next: conversationContinuation(modelName)
         }
       ]
     }
@@ -133,7 +134,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
 
   const addMessage = useCallback((message: Omit<Message, 'id'>) => {
     setMessages(prev => [...prev, { ...message, id: prev.length }]);
-    if (message.from === 'model' && !isMuted && audioRef.current) {
+    if (message.from === 'model' && message.type === 'text' && !isMuted && audioRef.current) {
       audioRef.current.play().catch(console.error);
     }
   }, [isMuted]);
@@ -152,6 +153,19 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
           ctaText: step.cta?.text,
           ctaLink: step.cta?.link,
         });
+      }
+      
+      if (step.image) {
+          const imgData = PlaceHolderImages.find(p => p.id === step.image!.id);
+          if (imgData) {
+            addMessage({
+                from: 'model',
+                content: '',
+                type: 'image',
+                imageUrl: imgData.imageUrl,
+                imageHint: imgData.imageHint,
+            })
+          }
       }
 
       if (step.choices) {
@@ -229,13 +243,24 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
                         {message.from === 'model' && (<div className="w-6"></div>)}
                         <div
                             className={cn(
-                            'max-w-[80%] rounded-lg px-3 py-2 shadow-sm',
+                            'max-w-[80%] rounded-lg shadow-sm',
+                             message.type !== 'image' && 'px-3 py-2',
                             message.from === 'user'
                                 ? 'bg-white'
                                 : 'bg-whatsapp-message-out'
                             )}
                         >
-                            <p className="text-sm text-gray-800" style={{whiteSpace: 'pre-wrap'}}>{message.content}</p>
+                            {message.type === 'text' && <p className="text-sm text-gray-800" style={{whiteSpace: 'pre-wrap'}}>{message.content}</p>}
+                            
+                            {message.type === 'image' && message.imageUrl && (
+                                 <button onClick={() => setSelectedImage(message.imageUrl!)} className="relative w-64 h-auto aspect-square rounded-lg overflow-hidden cursor-pointer">
+                                     <Image src={message.imageUrl} alt={message.imageHint || "Imagem do chat"} fill className="object-cover" unoptimized={message.imageUrl.endsWith('.gif')} />
+                                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                          <Maximize className="text-white" />
+                                      </div>
+                                 </button>
+                            )}
+
                             {message.type === 'cta' && message.ctaLink && (
                               <Button 
                                   onClick={() => handleCheckoutClick(message.ctaLink!)}
@@ -283,6 +308,20 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
             </p>
           </footer>
           <audio ref={audioRef} src="/notification.mp3" preload="auto" />
+        </DialogContent>
+      </Dialog>
+      
+      {/* Image viewer modal */}
+      <Dialog open={!!selectedImage} onOpenChange={(isOpen) => !isOpen && setSelectedImage(null)}>
+        <DialogContent className="p-0 border-0 bg-transparent shadow-none max-w-2xl image-modal-content">
+            {selectedImage && (
+                <div className="relative w-full h-auto">
+                    <Image src={selectedImage} alt="Visualização de imagem" width={800} height={800} className="rounded-lg object-contain" unoptimized={selectedImage.endsWith('.gif')} />
+                </div>
+            )}
+            <button onClick={() => setSelectedImage(null)} className="absolute top-2 right-2 text-white bg-black/50 rounded-full p-1">
+                <X size={24} />
+            </button>
         </DialogContent>
       </Dialog>
     </>
