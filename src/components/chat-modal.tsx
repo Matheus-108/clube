@@ -62,39 +62,39 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   const conversationContinuation = (modelName: string): ChatStep[] => [
     {
         model: `Vou te explicar como funciona o CLUBE, é novidade tá, chegou agora na sua cidade, É simples: no Clube você encontra fotos secretas, vídeos quentes e pode falar comigo, ${modelName}, em privado, podemos até marcar um presencial rs 😏`,
-        delay: 1500
+        delay: 3000
     },
     {
         model: "E eu tô online agora, esperando por você, olha só como já to...",
-        delay: 1200
+        delay: 2500
     },
     {
         image: { id: "chat-gif-1" },
-        delay: 1000,
-    },
-    {
-        model: "Agora me diz se vale a pena conhecer nosso CLUBE hahahah olha o que o pessoal la dentro ta marcando já 😏",
-        delay: 1500,
-    },
-    {
-        image: { id: "chat-img-1" },
-        delay: 500,
-    },
-    {
-        image: { id: "chat-img-2" },
-        delay: 1000,
-    },
-    {
-        model: "E amor, assim que as meninas te adicionarem no grupinho, eu vou te chamar pessoalmente no privado pra te mandar um presentinho de Boas-Vindas🤭🔥 Já to molhada aqui",
         delay: 2000,
     },
     {
+        model: "Agora me diz se vale a pena conhecer nosso CLUBE hahahah olha o que o pessoal la dentro ta marcando já 😏",
+        delay: 3000,
+    },
+    {
+        image: { id: "chat-img-1" },
+        delay: 1500,
+    },
+    {
+        image: { id: "chat-img-2" },
+        delay: 2000,
+    },
+    {
+        model: "E amor, assim que as meninas te adicionarem no grupinho, eu vou te chamar pessoalmente no privado pra te mandar um presentinho de Boas-Vindas🤭🔥 Já to molhada aqui",
+        delay: 3500,
+    },
+    {
         image: { id: "chat-img-3" },
-        delay: 1000,
+        delay: 2000,
     },
     {
         model: "Quer liberar seu acesso agora?",
-        delay: 500,
+        delay: 1500,
         cta: {
             text: "👉 Sim, quero meu acesso!",
             link: CHECKOUT_URL,
@@ -105,10 +105,11 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   const getChatFlow = (modelName: string): ChatStep[] => [
     {
       model: `Oi amor 😘 eu sou a ${modelName}, acabei de entrar e vou ficar online até daqui a pouco...`,
-      delay: 1500
+      delay: 2000
     },
     {
       model: "E eu sei porque esta aqui 🔥 posso te enviar uma previa minha?",
+      delay: 2500,
       choices: [
         {
           text: "Sim, claro 😏",
@@ -142,8 +143,9 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   const sendModelMessages = useCallback(async (steps: ChatStep[]) => {
     for (const step of steps) {
       setIsTyping(true);
-      await new Promise(resolve => setTimeout(resolve, step.delay || 1000));
+      await new Promise(resolve => setTimeout(resolve, (step.delay || 1000) / 2)); // Typing time
       setIsTyping(false);
+      await new Promise(resolve => setTimeout(resolve, (step.delay || 1000) / 2)); // Pause after typing
 
       if (step.model) {
         addMessage({
