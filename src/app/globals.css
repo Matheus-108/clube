@@ -93,7 +93,7 @@
 
   /* WhatsApp Chat Modal Styles */
   .whatsapp-modal {
-    @apply max-w-lg w-full h-full md:h-[85vh] md:max-h-[700px] flex flex-col shadow-2xl rounded-none md:rounded-lg;
+    @apply max-w-lg w-full h-full md:h-auto md:max-h-[700px] flex flex-col shadow-2xl rounded-none md:rounded-lg;
   }
 
   .whatsapp-modal > [data-slot='close-button'] {
@@ -187,5 +187,39 @@
 
   .image-modal-content > [data-slot='close-button'] {
     @apply hidden;
+  }
+  
+  .payment-popup-glow {
+    box-shadow: 0 0 15px 5px rgba(230, 30, 66, 0.4), 0 0 30px 10px rgba(255, 179, 0, 0.2);
+  }
+
+  .payment-popup-overlay {
+    backdrop-filter: blur(8px);
+  }
+
+  .payment-popup-content {
+    background: linear-gradient(145deg, #1a0108, #0f0f0f);
+  }
+
+  .payment-button-gradient {
+    background-image: linear-gradient(to right, #ef4444, #d946ef, #8b5cf6);
+    transition: all 0.3s ease;
+  }
+  .payment-button-gradient:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #d946ef;
+  }
+  
+  .waiting-for-payment-glow {
+    animation: waiting-glow 2s infinite ease-in-out;
+  }
+
+  @keyframes waiting-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(250, 204, 21, 0.2), 0 0 10px rgba(250, 204, 21, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 15px rgba(250, 204, 21, 0.5), 0 0 25px rgba(250, 204, 21, 0.4);
+    }
   }
 }

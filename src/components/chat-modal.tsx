@@ -6,9 +6,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { type Model } from '@/lib/models';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { X, Volume2, VolumeX, Maximize, Camera } from 'lucide-react';
+import { X, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import PaymentPopup from './payment-popup';
 
 type Message = {
   id: number;
@@ -52,6 +52,8 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   const [quickReplies, setQuickReplies] = useState<QuickReply[]>([]);
   const [isMuted, setIsMuted] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isPaymentPopupOpen, setPaymentPopupOpen] = useState(false);
+
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -178,11 +180,19 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
   }, [sendModelMessages, chatFlow]);
 
   useEffect(() => {
-    if (isOpen && !chatFlowHasStarted.current) {
-      startChat();
-    } else if (!isOpen) {
-      chatFlowHasStarted.current = false;
+    let timer: NodeJS.Timeout;
+    if (isOpen) {
+      if (!chatFlowHasStarted.current) {
+        startChat();
+      }
+      timer = setTimeout(() => {
+        setPaymentPopupOpen(true);
+      }, 30000);
+    } else {
+        chatFlowHasStarted.current = false;
+        setPaymentPopupOpen(false);
     }
+    return () => clearTimeout(timer);
   }, [isOpen, startChat]);
 
   useEffect(() => {
@@ -204,14 +214,14 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
             <DialogTitle>Chat com {model.name}</DialogTitle>
             <DialogDescription>Uma conversa simulada com a modelo {model.name}.</DialogDescription>
           </DialogHeader>
-          <header className="bg-whatsapp-green-dark p-3 flex items-center gap-3 shadow-md z-10">
+          <header className="bg-[#005E54] p-3 flex items-center gap-3 shadow-md z-10">
             <Avatar>
               {modelImage && <AvatarImage src={modelImage.imageUrl} alt={model.name} data-ai-hint={modelImage.imageHint} />}
               <AvatarFallback>{model.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <p className="font-bold text-white">{model.name}</p>
-              <p className="text-xs text-whatsapp-green-light">online</p>
+              <p className="text-xs text-[#77b783]">online</p>
             </div>
              <button onClick={() => setIsMuted(!isMuted)} className="text-white/80 hover:text-white transition-colors">
                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
@@ -221,13 +231,13 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
             </button>
           </header>
 
-          <div className="bg-whatsapp-bg flex-1 overflow-y-auto p-4 flex flex-col">
+          <div className="bg-[#E5DDD5] dark:bg-[#0b141a] flex-1 overflow-y-auto p-4 flex flex-col" style={{ backgroundImage: `url('/bg-chat-tile-light.png')`, backgroundRepeat: 'repeat' }}>
             <div className="flex-1 space-y-3">
               {messages.map((message, index) => (
                 <Fragment key={message.id}>
                     {index === 0 && (
                          <div className="text-center my-2">
-                            <span className="bg-[#E1F2FB] text-gray-600 text-xs rounded-md px-2 py-1">HOJE</span>
+                            <span className="bg-[#E1F3FB] dark:bg-[#1a2c38] text-gray-600 dark:text-gray-300 text-xs rounded-md px-2 py-1 shadow-sm">HOJE</span>
                         </div>
                     )}
                     <div
@@ -242,11 +252,11 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
                             'max-w-[80%] rounded-lg shadow-sm',
                              message.type !== 'image' && 'px-3 py-2',
                             message.from === 'user'
-                                ? 'bg-white'
-                                : 'bg-whatsapp-message-out'
+                                ? 'bg-white dark:bg-[#005C4B]'
+                                : 'bg-[#DCF8C6] dark:bg-[#202c33]'
                             )}
                         >
-                            {message.type === 'text' && <p className="text-sm text-gray-800" style={{whiteSpace: 'pre-wrap'}}>{message.content}</p>}
+                            {message.type === 'text' && <p className="text-sm text-gray-800 dark:text-gray-100" style={{whiteSpace: 'pre-wrap'}}>{message.content}</p>}
                             
                             {message.type === 'image' && message.imageUrl && (
                                  <button onClick={() => setSelectedImage(message.imageUrl!)} className="relative w-64 h-auto aspect-square rounded-lg overflow-hidden cursor-pointer">
@@ -263,7 +273,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
               ))}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="bg-whatsapp-message-out rounded-lg px-4 py-3 shadow-sm animate-slide-in">
+                  <div className="bg-[#DCF8C6] dark:bg-[#202c33] rounded-lg px-4 py-3 shadow-sm animate-slide-in">
                     <div className="typing-indicator">
                       <span></span>
                       <span></span>
@@ -281,21 +291,26 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
                   <button
                     key={index}
                     onClick={() => handleOptionSelect(reply)}
-                    className="w-full text-left bg-white rounded-full p-3 shadow-sm flex items-center hover:bg-gray-100 transition-colors"
+                    className="w-full text-left bg-white dark:bg-gray-700 rounded-full p-3 shadow-sm flex items-center hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                   >
-                    <span className="flex-1 text-primary text-sm font-medium text-center">{reply.text}</span>
+                    <span className="flex-1 text-blue-500 dark:text-blue-400 text-sm font-medium text-center">{reply.text}</span>
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          <footer className="bg-whatsapp-bg text-center py-2">
+          <footer className="bg-[#F0F0F0] dark:bg-black/50 text-center py-2">
             <p className="text-xs text-gray-500">
               Conversa simulada para experiência — agendamentos reais são digitais.
             </p>
           </footer>
           <audio ref={audioRef} src="/notification.mp3" preload="auto" />
+          <PaymentPopup 
+            isOpen={isPaymentPopupOpen} 
+            onClose={() => setPaymentPopupOpen(false)} 
+            model={model} 
+          />
         </DialogContent>
       </Dialog>
       
