@@ -21,16 +21,18 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
         <Script src="https://app.pushinpay.com.br/checkout.js" strategy="afterInteractive" />
-        <script>
-          {`
-            window.kwaiPixelId = "68d950c2efa723954c3ec30d";
-            var a = document.createElement("script");
-            a.setAttribute("async", "");
-            a.setAttribute("defer", "");
-            a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-kwai.js");
-            document.head.appendChild(a);
-          `}
-        </script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.kwaiPixelId = "68d950c2efa723954c3ec30d";
+              var a = document.createElement("script");
+              a.setAttribute("async", "");
+              a.setAttribute("defer", "");
+              a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-kwai.js");
+              document.head.appendChild(a);
+            `,
+          }}
+        />
       </head>
       <body className="font-body antialiased">
         <ThemeProvider
