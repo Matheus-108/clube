@@ -22,6 +22,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
         <Script src="https://app.pushinpay.com.br/checkout.js" strategy="afterInteractive" />
         <script
+          id="kwai-pixel-script"
           dangerouslySetInnerHTML={{
             __html: `
               window.kwaiPixelId = "68d950c2efa723954c3ec30d";

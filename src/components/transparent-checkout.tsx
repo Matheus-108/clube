@@ -17,12 +17,6 @@ const benefits = [
     { text: 'Conteúdo personalizado', icon: <Heart className="h-5 w-5 text-emerald-400" /> }
 ];
 
-declare global {
-  interface Window {
-    pp: (action: string, options: { checkoutId: string; email: string }) => void;
-  }
-}
-
 export default function TransparentCheckout() {
     const [email, setEmail] = useState('');
     // Este é o ID do seu produto/checkout na PushinPay.
@@ -34,8 +28,9 @@ export default function TransparentCheckout() {
             return;
         }
 
-        if (window.pp) {
-          window.pp('open', {
+        const win = window as any;
+        if (win.pp) {
+          win.pp('open', {
             checkoutId: checkoutId,
             email: email,
           });
