@@ -331,11 +331,6 @@ export default function ChatModal({ isOpen, onOpenChange, model, onScrollToCheck
             )}
           </div>
 
-          <footer className="bg-[#F0F0F0] dark:bg-black/50 text-center py-2">
-            <p className="text-xs text-gray-500">
-              Conversa simulada para experiência — agendamentos reais são digitais.
-            </p>
-          </footer>
           <audio ref={audioRef} src="/notification.mp3" preload="auto" />
           {isPaymentPopupOpen && <PaymentPopup 
             isOpen={isPaymentPopupOpen} 
