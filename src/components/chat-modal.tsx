@@ -25,17 +25,19 @@ type Message = {
 type QuickReply = {
   text: string;
   response: string;
-  next: any[];
+  next: ChatStep[];
 };
+
+type ActionButton = {
+    text: string;
+    action: 'scrollToCheckout';
+}
 
 type ChatStep = {
   model?: string;
   delay: number;
   choices?: QuickReply[];
-  cta?: {
-    text: string;
-    link: string;
-  };
+  actionButton?: ActionButton;
   image?: {
       id: string;
   }
@@ -45,12 +47,14 @@ interface ChatModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   model: Model;
+  onScrollToCheckout: () => void;
 }
 
-export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProps) {
+export default function ChatModal({ isOpen, onOpenChange, model, onScrollToCheckout }: ChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [quickReplies, setQuickReplies] = useState<QuickReply[]>([]);
+  const [actionButton, setActionButton] = useState<ActionButton | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isPaymentPopupOpen, setPaymentPopupOpen] = useState(false);
@@ -96,6 +100,13 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     {
         model: "Quer liberar seu acesso agora?",
         delay: 1500,
+    },
+    {
+        delay: 500,
+        actionButton: {
+            text: "Entrar no CLUBE",
+            action: 'scrollToCheckout',
+        }
     }
   ];
 
@@ -148,9 +159,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
         addMessage({
           from: 'model',
           content: step.model,
-          type: step.cta ? 'cta' : 'text',
-          ctaText: step.cta?.text,
-          ctaLink: step.cta?.link,
+          type: 'text',
         });
       }
       
@@ -169,6 +178,12 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
 
       if (step.choices) {
         setQuickReplies(step.choices);
+        setActionButton(null);
+      }
+      
+      if (step.actionButton) {
+          setActionButton(step.actionButton);
+          setQuickReplies([]);
       }
     }
   }, [addMessage]);
@@ -177,6 +192,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     chatFlowHasStarted.current = true;
     setMessages([]);
     setQuickReplies([]);
+    setActionButton(null);
     sendModelMessages(chatFlow);
   }, [sendModelMessages, chatFlow]);
 
@@ -187,7 +203,9 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
         startChat();
       }
       timer = setTimeout(() => {
-        setPaymentPopupOpen(true);
+        if (isOpen) { // Check if modal is still open
+            setPaymentPopupOpen(true);
+        }
       }, 30000);
     } else {
         chatFlowHasStarted.current = false;
@@ -198,12 +216,20 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
+  }, [messages, isTyping, actionButton]);
 
   const handleOptionSelect = (option: QuickReply) => {
     addMessage({ from: 'user', content: option.response, type: 'text' });
     setQuickReplies([]);
+    setActionButton(null);
     sendModelMessages(option.next);
+  };
+
+  const handleActionClick = () => {
+      if (actionButton?.action === 'scrollToCheckout') {
+          onOpenChange(false); // Close modal
+          onScrollToCheckout(); // Scroll to checkout section
+      }
   };
   
 
@@ -211,18 +237,14 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     <>
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
         <DialogContent className="whatsapp-modal p-0 gap-0">
-          <DialogHeader className="sr-only">
-            <DialogTitle>Chat com {model.name}</DialogTitle>
-            <DialogDescription>Uma conversa simulada com a modelo {model.name}.</DialogDescription>
-          </DialogHeader>
-          <header className="bg-[#005E54] p-3 flex items-center gap-3 shadow-md z-10">
-            <Avatar>
+          <DialogHeader className="p-3 flex flex-row items-center gap-3 shadow-md z-10 bg-[#005E54]">
+             <Avatar>
               {modelImage && <AvatarImage src={modelImage.imageUrl} alt={model.name} data-ai-hint={modelImage.imageHint} />}
               <AvatarFallback>{model.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <p className="font-bold text-white">{model.name}</p>
-              <p className="text-xs text-[#77b783]">online</p>
+              <DialogTitle className="font-bold text-white text-base">{model.name}</DialogTitle>
+              <DialogDescription className="text-xs text-[#77b783]">online</DialogDescription>
             </div>
              <button onClick={() => setIsMuted(!isMuted)} className="text-white/80 hover:text-white transition-colors">
                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
@@ -230,7 +252,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
             <button onClick={() => onOpenChange(false)} className="text-white/80 hover:text-white transition-colors">
               <X size={24} />
             </button>
-          </header>
+          </DialogHeader>
 
           <div className="bg-[#E5DDD5] dark:bg-[#0b141a] flex-1 overflow-y-auto p-4 flex flex-col" style={{ backgroundImage: `url('/bg-chat-tile-light.png')`, backgroundRepeat: 'repeat' }}>
             <div className="flex-1 space-y-3">
@@ -286,7 +308,7 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
               <div ref={messagesEndRef} />
             </div>
             
-            {quickReplies.length > 0 && !isTyping && (
+            {!isTyping && (
               <div className="mt-4 space-y-2 animate-fade-in">
                 {quickReplies.map((reply, index) => (
                   <button
@@ -297,6 +319,14 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
                     <span className="flex-1 text-blue-500 dark:text-blue-400 text-sm font-medium text-center">{reply.text}</span>
                   </button>
                 ))}
+                {actionButton && (
+                    <Button
+                        onClick={handleActionClick}
+                        className="w-full bg-green-500 hover:bg-green-600 text-white font-bold rounded-full p-3 shadow-lg"
+                    >
+                        {actionButton.text}
+                    </Button>
+                )}
               </div>
             )}
           </div>
@@ -317,8 +347,8 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
       
       {/* Image viewer modal */}
       <Dialog open={!!selectedImage} onOpenChange={(isOpen) => !isOpen && setSelectedImage(null)}>
-        <DialogContent className="p-0 border-0 bg-transparent shadow-none max-w-2xl image-modal-content">
-            <DialogHeader className="sr-only">
+        <DialogContent className="image-modal-content p-0 border-0 bg-transparent shadow-none max-w-2xl">
+            <DialogHeader className='sr-only'>
               <DialogTitle>Visualização de Imagem</DialogTitle>
               <DialogDescription>Imagem do chat em tela cheia.</DialogDescription>
             </DialogHeader>
@@ -335,5 +365,3 @@ export default function ChatModal({ isOpen, onOpenChange, model }: ChatModalProp
     </>
   );
 }
-
-    

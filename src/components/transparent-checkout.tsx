@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Lock, Heart, Flame, MessageCircle, Loader2, Copy, Check } from 'lucide-react';
@@ -24,7 +24,7 @@ type PixData = {
     qrCode: string;
 }
 
-export default function TransparentCheckout() {
+const TransparentCheckout = forwardRef<HTMLDivElement>((props, ref) => {
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [pixData, setPixData] = useState<PixData | null>(null);
@@ -88,7 +88,7 @@ export default function TransparentCheckout() {
 
     return (
         <>
-            <div className="max-w-md mx-auto mt-12 bg-black rounded-xl p-px"
+            <div id="checkout-section" ref={ref} className="max-w-md mx-auto mt-12 bg-black rounded-xl p-px scroll-mt-20"
                  style={{
                     background: 'linear-gradient(to bottom, #4a4a4a, #1c1c1c)',
                     boxShadow: '0px 10px 30px rgba(138, 43, 226, 0.3)',
@@ -173,4 +173,7 @@ export default function TransparentCheckout() {
             </Dialog>
         </>
     );
-}
+});
+TransparentCheckout.displayName = 'TransparentCheckout';
+
+export default TransparentCheckout;

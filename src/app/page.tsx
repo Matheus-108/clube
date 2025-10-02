@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import ModelCard from '@/components/model-card';
@@ -39,6 +39,8 @@ export default function Home() {
   const [newModelsCount, setNewModelsCount] = useState(0);
   const [onlineGirlsCount, setOnlineGirlsCount] = useState(94);
   const [newTodayCount, setNewTodayCount] = useState(12);
+
+  const checkoutRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -86,6 +88,10 @@ export default function Home() {
       setIsSearchLoading(false);
       setSearchPerformed(true);
     }, totalLoadingTime);
+  };
+
+  const handleScrollToCheckout = () => {
+    checkoutRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
   
   if (!isMounted) {
@@ -189,7 +195,7 @@ export default function Home() {
                   </p>
               </Card>
 
-              <TransparentCheckout />
+              <TransparentCheckout ref={checkoutRef} />
 
             </div>
           )}
@@ -202,6 +208,7 @@ export default function Home() {
           isOpen={isChatModalOpen}
           onOpenChange={setChatModalOpen}
           model={selectedModel}
+          onScrollToCheckout={handleScrollToCheckout}
         />
       )}
 
