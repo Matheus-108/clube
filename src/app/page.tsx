@@ -15,6 +15,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import GifPreview from '@/components/gif-preview';
 import Image from 'next/image';
 import TransparentCheckout from '@/components/transparent-checkout';
+import CookieConsent from '@/components/cookie-consent';
 
 const shuffleArray = <T,>(array: T[]): T[] => {
   let currentIndex = array.length, randomIndex;
@@ -30,7 +31,8 @@ export default function Home() {
   const [isChatModalOpen, setChatModalOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<Model | null>(null);
   const [isMounted, setIsMounted] = useState(false);
-  
+  const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
+
   // State for city search
   const [city, setCity] = useState('');
   const [isSearchLoading, setIsSearchLoading] = useState(false);
@@ -44,6 +46,9 @@ export default function Home() {
 
   useEffect(() => {
     setIsMounted(true);
+    const consent = localStorage.getItem('cookie-consent');
+    setCookieConsent(consent === 'true');
+
     // Initial random values
     setOnlineGirlsCount(Math.floor(Math.random() * (100 - 80 + 1)) + 80);
     setNewTodayCount(Math.floor(Math.random() * (15 - 5 + 1)) + 5);
@@ -68,6 +73,11 @@ export default function Home() {
         clearInterval(newTodayInterval);
     }
   }, []);
+
+  const handleAcceptCookies = () => {
+    localStorage.setItem('cookie-consent', 'true');
+    setCookieConsent(true);
+  };
 
   const handleOpenChat = (model: Model) => {
     setSelectedModel(model);
@@ -94,8 +104,12 @@ export default function Home() {
     checkoutRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
   
-  if (!isMounted) {
+  if (!isMounted || cookieConsent === null) {
     return null; // or a loading spinner
+  }
+
+  if (!cookieConsent) {
+    return <CookieConsent onAccept={handleAcceptCookies} />;
   }
 
   return (
