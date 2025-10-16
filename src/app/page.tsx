@@ -10,7 +10,7 @@ import SearchLoadingModal from '@/components/search-loading-modal';
 import { Button } from '@/components/ui/button';
 import { models, type Model } from '@/lib/models';
 import { Input } from '@/components/ui/input';
-import { Loader2, Search, MapPin, Users, Zap, Sparkles, MessageSquare, Circle, Flame } from 'lucide-react';
+import { Loader2, Search, MapPin, Users, Zap, Sparkles, MessageSquare, Circle, Flame, ArrowDownCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import GifPreview from '@/components/gif-preview';
 import Image from 'next/image';
@@ -84,6 +84,7 @@ export default function Home() {
   const [newModelsCount, setNewModelsCount] = useState(0);
   const [onlineGirlsCount, setOnlineGirlsCount] = useState(94);
   const [newTodayCount, setNewTodayCount] = useState(12);
+  const [showDelayedButton, setShowDelayedButton] = useState(false);
 
   const checkoutRef = useRef<HTMLDivElement>(null);
 
@@ -116,6 +117,15 @@ export default function Home() {
         clearInterval(newTodayInterval);
     }
   }, []);
+
+  useEffect(() => {
+    if (searchPerformed) {
+        const timer = setTimeout(() => {
+            setShowDelayedButton(true);
+        }, 180000); // 3 minutes
+        return () => clearTimeout(timer);
+    }
+  }, [searchPerformed]);
 
   const handleAcceptCookies = () => {
     localStorage.setItem('cookie-consent', 'true');
@@ -233,6 +243,16 @@ export default function Home() {
                 <WistiaVideo />
               </div>
 
+              {showDelayedButton && (
+                <div className="flex justify-center my-8 animate-fade-in">
+                    <Button onClick={handleScrollToCheckout} size="lg" className="h-auto py-4 px-8 text-lg font-bold text-white bg-emerald-500 hover:bg-emerald-600 shadow-[0_4px_14px_0_rgb(0,255,127,0.3)] animate-pulse">
+                        <ArrowDownCircle className="mr-3 h-6 w-6" />
+                        Sim, Quero Acesso Imediato
+                    </Button>
+                </div>
+              )}
+
+
               <p className="text-center text-lg md:text-xl max-w-2xl mx-auto text-white/90 mb-10 leading-relaxed">
                   Descobrimos quem está disponível em <span className="font-bold text-vibrant-red">{city}</span> neste momento.
                   <br />
@@ -279,5 +299,3 @@ export default function Home() {
     </>
   );
 }
-
-    

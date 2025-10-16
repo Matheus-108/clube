@@ -22,7 +22,7 @@ export default function InteractivePopup({ onOpenChat }: InteractivePopupProps) 
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Timer to show the popup after 60 seconds
+  // Timer to show the popup after 3 minutes
   useEffect(() => {
     const mainPopupTimer = setTimeout(() => {
       if (!isClosed) {
@@ -30,7 +30,7 @@ export default function InteractivePopup({ onOpenChat }: InteractivePopupProps) 
         setSelectedModel(randomModel);
         setIsVisible(true);
       }
-    }, 60000); // 60 seconds
+    }, 180000); // 3 minutes
 
     return () => clearTimeout(mainPopupTimer);
   }, [isClosed]);
