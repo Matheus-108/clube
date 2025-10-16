@@ -85,6 +85,7 @@ export default function Home() {
   const [onlineGirlsCount, setOnlineGirlsCount] = useState(94);
   const [newTodayCount, setNewTodayCount] = useState(12);
   const [showDelayedButton, setShowDelayedButton] = useState(false);
+  const [showPageContent, setShowPageContent] = useState(false);
 
   const checkoutRef = useRef<HTMLDivElement>(null);
 
@@ -120,10 +121,18 @@ export default function Home() {
 
   useEffect(() => {
     if (searchPerformed) {
-        const timer = setTimeout(() => {
+        const contentTimer = setTimeout(() => {
+            setShowPageContent(true);
+        }, 120000); // 2 minutes
+
+        const buttonTimer = setTimeout(() => {
             setShowDelayedButton(true);
         }, 180000); // 3 minutes
-        return () => clearTimeout(timer);
+
+        return () => {
+            clearTimeout(contentTimer);
+            clearTimeout(buttonTimer);
+        }
     }
   }, [searchPerformed]);
 
@@ -141,6 +150,7 @@ export default function Home() {
     if (!city || isSearchLoading) return;
     setIsSearchLoading(true);
     setSearchPerformed(false);
+    setShowPageContent(false); // Reset content visibility on new search
 
     // Total duration for the loading modal
     const totalLoadingTime = 5000; // 5 seconds for all steps
@@ -242,41 +252,45 @@ export default function Home() {
               <div className="max-w-md mx-auto my-8">
                 <WistiaVideo />
               </div>
+              
+              {showPageContent && (
+                  <div className="animate-fade-in">
+                    {showDelayedButton && (
+                      <div className="flex justify-center my-8 animate-fade-in">
+                          <Button onClick={handleScrollToCheckout} size="lg" className="h-auto py-4 px-8 text-lg font-bold text-white bg-emerald-500 hover:bg-emerald-600 shadow-[0_4px_14px_0_rgb(0,255,127,0.3)] animate-pulse">
+                              <ArrowDownCircle className="mr-3 h-6 w-6" />
+                              Sim, Quero Acesso Imediato
+                          </Button>
+                      </div>
+                    )}
 
-              {showDelayedButton && (
-                <div className="flex justify-center my-8 animate-fade-in">
-                    <Button onClick={handleScrollToCheckout} size="lg" className="h-auto py-4 px-8 text-lg font-bold text-white bg-emerald-500 hover:bg-emerald-600 shadow-[0_4px_14px_0_rgb(0,255,127,0.3)] animate-pulse">
-                        <ArrowDownCircle className="mr-3 h-6 w-6" />
-                        Sim, Quero Acesso Imediato
-                    </Button>
+
+                    <p className="text-center text-lg md:text-xl max-w-2xl mx-auto text-white/90 mb-10 leading-relaxed">
+                        Descobrimos quem está disponível em <span className="font-bold text-vibrant-red">{city}</span> neste momento.
+                        <br />
+                        No Clube do Sexo você pode espiar fotos secretas, desbloquear vídeos íntimos e marcar encontros sigilosos… tudo em um só lugar.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {shuffledModels.map(model => (
+                        <ModelCard
+                          key={model.id}
+                          model={model}
+                          onChatClick={handleOpenChat}
+                        />
+                      ))}
+                    </div>
+
+                    <Card className="max-w-lg mx-auto mt-12 bg-red-900/20 border-red-500/30 text-center p-4 rounded-lg">
+                        <p className="font-semibold text-white">
+                            <Zap className="inline text-yellow-400 animate-pulse h-5 w-5 mr-1" />
+                            {newModelsCount} nova{newModelsCount > 1 ? 's' : ''} {newModelsCount > 1 ? 'modelos' : 'modelo'} entraram nos últimos minutos em {city}
+                        </p>
+                    </Card>
+
+                    <TransparentCheckout ref={checkoutRef} />
                 </div>
               )}
-
-
-              <p className="text-center text-lg md:text-xl max-w-2xl mx-auto text-white/90 mb-10 leading-relaxed">
-                  Descobrimos quem está disponível em <span className="font-bold text-vibrant-red">{city}</span> neste momento.
-                  <br />
-                  No Clube do Sexo você pode espiar fotos secretas, desbloquear vídeos íntimos e marcar encontros sigilosos… tudo em um só lugar.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {shuffledModels.map(model => (
-                  <ModelCard
-                    key={model.id}
-                    model={model}
-                    onChatClick={handleOpenChat}
-                  />
-                ))}
-              </div>
-
-              <Card className="max-w-lg mx-auto mt-12 bg-red-900/20 border-red-500/30 text-center p-4 rounded-lg">
-                  <p className="font-semibold text-white">
-                      <Zap className="inline text-yellow-400 animate-pulse h-5 w-5 mr-1" />
-                      {newModelsCount} nova{newModelsCount > 1 ? 's' : ''} {newModelsCount > 1 ? 'modelos' : 'modelo'} entraram nos últimos minutos em {city}
-                  </p>
-              </Card>
-
-              <TransparentCheckout ref={checkoutRef} />
 
             </div>
           )}
