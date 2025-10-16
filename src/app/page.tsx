@@ -16,6 +16,41 @@ import GifPreview from '@/components/gif-preview';
 import Image from 'next/image';
 import TransparentCheckout from '@/components/transparent-checkout';
 import CookieConsent from '@/components/cookie-consent';
+import Script from 'next/script';
+
+const WistiaVideo = () => {
+  useEffect(() => {
+    // This script tag will be added to the head
+    const script = document.createElement('script');
+    script.src = "https://fast.wistia.com/embed/yvwp9931zd.js";
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      // Clean up the script when the component unmounts
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        wistia-player[media-id='yvwp9931zd']:not(:defined) { 
+          background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/yvwp9931zd/swatch'); 
+          display: block; 
+          filter: blur(5px); 
+          padding-top:178.06%; 
+        }
+      `}</style>
+      <div className="wistia_responsive_padding" style={{padding: '178.06% 0 0 0', position: 'relative'}}>
+        <div className="wistia_responsive_wrapper" style={{height: '100%', left: 0, position: 'absolute', top: 0, width: '100%'}}>
+           <div className="wistia_embed wistia_async_yvwp9931zd videoFoam=true" style={{height:'100%',position:'relative',width:'100%'}}>&nbsp;</div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 
 const shuffleArray = <T,>(array: T[]): T[] => {
   let currentIndex = array.length, randomIndex;
@@ -101,7 +136,8 @@ export default function Home() {
   };
 
   const handleScrollToCheckout = () => {
-    checkoutRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const checkoutElement = document.getElementById('checkout-section');
+    checkoutElement?.scrollIntoView({ behavior: 'smooth' });
   };
   
   if (!isMounted || cookieConsent === null) {
@@ -154,7 +190,7 @@ export default function Home() {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                  className="bg-[#1C1C1C] border-none text-white placeholder:text-gray-500 w-full h-14 pl-12 pr-4 rounded-full text-base"
+                  className="bg-[#1C1C1E] border-none text-white placeholder:text-gray-500 w-full h-14 pl-12 pr-4 rounded-full text-base"
                 />
               </div>
               <Button 
@@ -185,6 +221,10 @@ export default function Home() {
                       Localização detectada: {city}
                   </div>
               </Card>
+
+              <div className="max-w-md mx-auto my-8">
+                <WistiaVideo />
+              </div>
 
               <p className="text-center text-lg md:text-xl max-w-2xl mx-auto text-white/90 mb-10 leading-relaxed">
                   Descobrimos quem está disponível em <span className="font-bold text-vibrant-red">{city}</span> neste momento.
