@@ -48,7 +48,7 @@ export default function RootLayout({
           src="https://www.facebook.com/tr?id=1125488216104412&ev=PageView&noscript=1"
           />
         </noscript>
-        <Script src="https://fast.wistia.com/player.js" async />
+        <Script src="https://fast.wistia.com/player.js" strategy="lazyOnload" />
       </head>
       <body className="font-body antialiased">
         <ThemeProvider
@@ -64,3 +64,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+    

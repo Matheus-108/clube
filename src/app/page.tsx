@@ -20,31 +20,39 @@ import Script from 'next/script';
 
 const WistiaVideo = () => {
   useEffect(() => {
-    // This script tag will be added to the head
     const script = document.createElement('script');
-    script.src = "https://fast.wistia.com/embed/yvwp9931zd.js";
+    script.src = "https://fast.wistia.com/assets/external/E-v1.js";
     script.async = true;
-    document.head.appendChild(script);
+    document.body.appendChild(script);
 
     return () => {
-      // Clean up the script when the component unmounts
-      document.head.removeChild(script);
+      document.body.removeChild(script);
     };
   }, []);
 
   return (
     <>
       <style>{`
-        wistia-player[media-id='yvwp9931zd']:not(:defined) { 
-          background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/yvwp9931zd/swatch'); 
-          display: block; 
-          filter: blur(5px); 
-          padding-top:178.06%; 
+        .wistia_embed {
+          height:100%;
+          position:relative;
+          width:100%;
+        }
+        .wistia_responsive_padding {
+          padding:178.06% 0 0 0;
+          position:relative;
+        }
+        .wistia_responsive_wrapper {
+          height:100%;
+          left:0;
+          position:absolute;
+          top:0;
+          width:100%;
         }
       `}</style>
-      <div className="wistia_responsive_padding" style={{padding: '178.06% 0 0 0', position: 'relative'}}>
-        <div className="wistia_responsive_wrapper" style={{height: '100%', left: 0, position: 'absolute', top: 0, width: '100%'}}>
-           <div className="wistia_embed wistia_async_yvwp9931zd videoFoam=true" style={{height:'100%',position:'relative',width:'100%'}}>&nbsp;</div>
+      <div className="wistia_responsive_padding">
+        <div className="wistia_responsive_wrapper">
+          <div className="wistia_embed wistia_async_yvwp9931zd videoFoam=true" style={{height:'100%',position:'relative',width:'100%'}}>&nbsp;</div>
         </div>
       </div>
     </>
@@ -136,8 +144,7 @@ export default function Home() {
   };
 
   const handleScrollToCheckout = () => {
-    const checkoutElement = document.getElementById('checkout-section');
-    checkoutElement?.scrollIntoView({ behavior: 'smooth' });
+    checkoutRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
   
   if (!isMounted || cookieConsent === null) {
@@ -272,3 +279,5 @@ export default function Home() {
     </>
   );
 }
+
+    
